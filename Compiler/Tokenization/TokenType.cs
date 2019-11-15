@@ -2,10 +2,13 @@ namespace Compiler.Tokenization
 {
     public enum TokenType
     {
-        Test,
+        // non-terminals
+        IntLiteral, Identifier, Operator, CharLiteral,
+
+        // special symbols - terminals
+        Underscore, Dot, QuestionMark, Quote, Zero,
         
-        Operator,
-        
+        // special tokens
         EndOfText, Error
     }
 }
