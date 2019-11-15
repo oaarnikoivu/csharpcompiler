@@ -1,0 +1,11 @@
+/Users/olive/RiderProjects/csharpcompiler/Compiler/bin/Debug/netcoreapp3.0/Compiler
+/Users/olive/RiderProjects/csharpcompiler/Compiler/bin/Debug/netcoreapp3.0/Compiler.deps.json
+/Users/olive/RiderProjects/csharpcompiler/Compiler/bin/Debug/netcoreapp3.0/Compiler.runtimeconfig.json
+/Users/olive/RiderProjects/csharpcompiler/Compiler/bin/Debug/netcoreapp3.0/Compiler.runtimeconfig.dev.json
+/Users/olive/RiderProjects/csharpcompiler/Compiler/bin/Debug/netcoreapp3.0/Compiler.dll
+/Users/olive/RiderProjects/csharpcompiler/Compiler/bin/Debug/netcoreapp3.0/Compiler.pdb
+/Users/olive/RiderProjects/csharpcompiler/Compiler/obj/Debug/netcoreapp3.0/Compiler.csprojAssemblyReference.cache
+/Users/olive/RiderProjects/csharpcompiler/Compiler/obj/Debug/netcoreapp3.0/Compiler.AssemblyInfoInputs.cache
+/Users/olive/RiderProjects/csharpcompiler/Compiler/obj/Debug/netcoreapp3.0/Compiler.AssemblyInfo.cs
+/Users/olive/RiderProjects/csharpcompiler/Compiler/obj/Debug/netcoreapp3.0/Compiler.dll
+/Users/olive/RiderProjects/csharpcompiler/Compiler/obj/Debug/netcoreapp3.0/Compiler.pdb
