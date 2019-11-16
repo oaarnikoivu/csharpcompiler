@@ -17,6 +17,7 @@
           <e p="ErrorReporter.cs" t="Include" />
           <e p="FileReader.cs" t="Include" />
           <e p="IFileReader.cs" t="Include" />
+          <e p="TreePrinter.cs" t="Include" />
         </e>
         <e p="Nodes" t="Include">
           <e p="CommandNodes" t="Include">
@@ -25,6 +26,7 @@
             <e p="CallCommandNode.cs" t="Include" />
             <e p="ForCommandNode.cs" t="Include" />
             <e p="IfCommandNode.cs" t="Include" />
+            <e p="LetCommandNode.cs" t="Include" />
             <e p="SequentialCommandNode.cs" t="Include" />
             <e p="WhileCommandNode.cs" t="Include" />
           </e>
@@ -33,6 +35,7 @@
             <e p="SequentialDeclarationNode.cs" t="Include" />
             <e p="VarDeclarationNode.cs" t="Include" />
           </e>
+          <e p="ErrorNode.cs" t="Include" />
           <e p="ExpressionNodes" t="Include">
             <e p="BinaryExpressionNode.cs" t="Include" />
             <e p="CharacterExpressionNode.cs" t="Include" />
@@ -58,6 +61,7 @@
             <e p="ExpressionParameterNode.cs" t="Include" />
             <e p="VarParameterNode.cs" t="Include" />
           </e>
+          <e p="ProgramNode.cs" t="Include" />
           <e p="StandardEnvironmentNodes" t="Include">
             <e p="BinaryOperationDeclarationNode.cs" t="Include" />
             <e p="BuiltInConstDeclarationNode.cs" t="Include" />
@@ -84,13 +88,13 @@
           </e>
         </e>
         <e p="Position.cs" t="Include" />
-        <e p="Program.cs" t="Include" />
         <e p="Properties" t="Include">
           <e p="launchSettings.json" t="Include" />
         </e>
         <e p="SyntaticAnalysis" t="Include">
           <e p="Parser.cs" t="Include" />
         </e>
+        <e p="Temp.cs" t="Include" />
         <e p="Tokenization" t="Include">
           <e p="Token.cs" t="Include" />
           <e p="Tokenizer.cs" t="Include" />

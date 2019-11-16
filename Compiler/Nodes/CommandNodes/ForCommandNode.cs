@@ -39,12 +39,13 @@ namespace Compiler.Nodes.CommandNodes
         /// <param name="toExpression"></param>
         /// <param name="command"></param>
         public ForCommandNode(IdentifierNode identifier, IExpressionNode assignExpression, IExpressionNode toExpression,
-            ICommandNode command)
+            ICommandNode command, Position position)
         {
             Identifier = identifier;
             AssignExpression = assignExpression;
             ToExpression = toExpression;
             Command = command;
+            Position = position;
         }
     }
 }
