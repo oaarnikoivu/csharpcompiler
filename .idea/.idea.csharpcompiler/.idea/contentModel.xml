@@ -6,6 +6,10 @@
     <e p="$PROJECT_DIR$" t="IncludeFlat">
       <e p="Compiler" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
+        <e p="CodeGeneration" t="Include">
+          <e p="IRuntimeEntity.cs" t="Include" />
+          <e p="TriangleAbstractMachine.cs" t="Include" />
+        </e>
         <e p="Compiler.cs" t="Include" />
         <e p="Compiler.csproj" t="IncludeRecursive" />
         <e p="IO" t="Include">
@@ -13,6 +17,64 @@
           <e p="ErrorReporter.cs" t="Include" />
           <e p="FileReader.cs" t="Include" />
           <e p="IFileReader.cs" t="Include" />
+        </e>
+        <e p="Nodes" t="Include">
+          <e p="CommandNodes" t="Include">
+            <e p="AssignCommandNode.cs" t="Include" />
+            <e p="BlankCommandNode.cs" t="Include" />
+            <e p="CallCommandNode.cs" t="Include" />
+            <e p="ForCommandNode.cs" t="Include" />
+            <e p="IfCommandNode.cs" t="Include" />
+            <e p="SequentialCommandNode.cs" t="Include" />
+            <e p="WhileCommandNode.cs" t="Include" />
+          </e>
+          <e p="DeclarationNodes" t="Include">
+            <e p="ConstDeclarationNode.cs" t="Include" />
+            <e p="SequentialDeclarationNode.cs" t="Include" />
+            <e p="VarDeclarationNode.cs" t="Include" />
+          </e>
+          <e p="ExpressionNodes" t="Include">
+            <e p="BinaryExpressionNode.cs" t="Include" />
+            <e p="CharacterExpressionNode.cs" t="Include" />
+            <e p="IdExpressionNode.cs" t="Include" />
+            <e p="IntegerExpressionNode.cs" t="Include" />
+            <e p="UnaryExpressionNode.cs" t="Include" />
+          </e>
+          <e p="Interfaces" t="Include">
+            <e p="IAbstractSyntaxTreeNode.cs" t="Include" />
+            <e p="ICommandNode.cs" t="Include" />
+            <e p="IDeclarationNode.cs" t="Include" />
+            <e p="IDeclaredNode.cs" t="Include" />
+            <e p="IEntityDeclarationNode.cs" t="Include" />
+            <e p="IExpressionNode.cs" t="Include" />
+            <e p="IParameterNode.cs" t="Include" />
+            <e p="IPrimitiveDeclarationNode.cs" t="Include" />
+            <e p="ITypeDeclarationNode.cs" t="Include" />
+            <e p="ITypedNode.cs" t="Include" />
+            <e p="IVariableDeclarationNode.cs" t="Include" />
+          </e>
+          <e p="ParameterNodes" t="Include">
+            <e p="BlankParameterNode.cs" t="Include" />
+            <e p="ExpressionParameterNode.cs" t="Include" />
+            <e p="VarParameterNode.cs" t="Include" />
+          </e>
+          <e p="StandardEnvironmentNodes" t="Include">
+            <e p="BinaryOperationDeclarationNode.cs" t="Include" />
+            <e p="BuiltInConstDeclarationNode.cs" t="Include" />
+            <e p="FunctionDeclarationNode.cs" t="Include" />
+            <e p="FunctionTypeDeclarationNode.cs" t="Include" />
+            <e p="SimpleTypeDeclarationNode.cs" t="Include" />
+            <e p="UnaryOperationDeclarationNode.cs" t="Include" />
+          </e>
+          <e p="TerminalNodes" t="Include">
+            <e p="CharacterLiteralNode.cs" t="Include" />
+            <e p="IdentifierNode.cs" t="Include" />
+            <e p="IntegerLiteralNode.cs" t="Include" />
+            <e p="OperatorNode.cs" t="Include" />
+          </e>
+          <e p="TypeDenoterNodes" t="Include">
+            <e p="TypeDenoterNode.cs" t="Include" />
+          </e>
         </e>
         <e p="obj" t="ExcludeRecursive">
           <e p="Debug" t="Include">
