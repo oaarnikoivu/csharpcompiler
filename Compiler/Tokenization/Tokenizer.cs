@@ -108,7 +108,7 @@ namespace Compiler.Tokenization
                 while (Reader.Current == '_' && char.IsLetter(Reader.Current)) TakeIt();
                 while (char.IsLetterOrDigit(Reader.Current)) TakeIt();
 
-                if (TokenTypes.IsKeyword(TokenSpelling))
+                if (TokenTypes.IsKeyword(TokenSpelling)) 
                     return TokenTypes.GetTokenForKeyword(TokenSpelling);
                 else
                     return TokenType.Identifier;
@@ -152,7 +152,7 @@ namespace Compiler.Tokenization
             else if (Reader.Current == '~')
             {
                 TakeIt();
-                return TokenType.Semicolon;
+                return TokenType.Is;
             }
             else if (Reader.Current == '(')
             {

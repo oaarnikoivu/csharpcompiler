@@ -5,7 +5,7 @@ namespace Compiler.IO
         /// <summary>
         /// Whether to write debugging logs
         /// </summary>
-        private const bool DEBUG = false;
+        private const bool DEBUG = true;
 
         /// <summary>
         /// Write a debugging message if the logging is turned on

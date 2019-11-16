@@ -2,6 +2,7 @@ using Compiler.IO;
 using Compiler.Tokenization;
 using System.Collections.Generic;
 using System.IO;
+using Compiler.SyntaticAnalysis;
 using static System.Console;
 
 namespace Compiler
@@ -22,6 +23,11 @@ namespace Compiler
         /// The tokenizer
         /// </summary>
         public Tokenizer Tokenizer { get; }
+        
+        /// <summary>
+        /// The parser
+        /// </summary>
+        public Parser Parser { get;  }
 
         /// <summary>
         /// Creates a new compiler
@@ -32,6 +38,7 @@ namespace Compiler
             Reporter = new ErrorReporter();
             Reader = new FileReader(inputFile);
             Tokenizer = new Tokenizer(Reader, Reporter);
+            Parser = new Parser(Reporter);
         }
 
         /// <summary>
@@ -45,6 +52,12 @@ namespace Compiler
             if (Reporter.HasErrors) return;
             WriteLine("Done");
             WriteLine(string.Join("\n", tokens));
+            
+            // Parse
+            WriteLine("Parsing...");
+            Parser.Parse(tokens);
+            if (Reporter.HasErrors) return;
+            WriteLine("Done");
         }
 
         /// <summary>

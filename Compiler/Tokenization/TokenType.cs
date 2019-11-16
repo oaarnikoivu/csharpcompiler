@@ -11,7 +11,7 @@ namespace Compiler.Tokenization
         IntLiteral, Identifier, Operator, CharLiteral,
         
         // reserved words - terminals
-        If, Then, Else, EndIf, While, Let, In, Begin, End, For, To, Do, Const, Var,
+        If, Then, Else, EndIf, While, Let, In, Begin, End, For, To, Do, Const, Var, Next,
         
         // punctuation - terminals
         Colon, Semicolon, Becomes, Is, LeftBracket, RightBracket, 
@@ -44,7 +44,8 @@ namespace Compiler.Tokenization
             {"do", TokenType.Do},
             {"const", TokenType.Const},
             {"var", TokenType.Var},
-            {"in", TokenType.In}
+            {"in", TokenType.In},
+            {"next", TokenType.Next}
             
         }.ToImmutableDictionary();
 
