@@ -101,18 +101,68 @@ namespace Compiler.Tokenization
         private TokenType ScanToken()
         {
             TokenSpelling.Clear();
-            if (char.IsDigit(Reader.Current))
+            if (char.IsLetter(Reader.Current) || Reader.Current == '_')
             {
+                // Reading an identifier
+                TakeIt();
+                while (Reader.Current == '_' && char.IsLetter(Reader.Current)) TakeIt();
+                while (char.IsLetterOrDigit(Reader.Current)) TakeIt();
+
+                if (TokenTypes.IsKeyword(TokenSpelling))
+                    return TokenTypes.GetTokenForKeyword(TokenSpelling);
+                else
+                    return TokenType.Identifier;
+            }
+            else if (char.IsDigit(Reader.Current))
+            {
+                // Reading an integer
                 if (Reader.Current == '0')
                     TakeIt();
-                while (Reader.Current > '0') 
-                    TakeIt();
+                else if (Reader.Current > '0')
+                    while (char.IsDigit(Reader.Current))
+                        TakeIt();
                 return TokenType.IntLiteral;
             }
             else if (IsOperator(Reader.Current))
             {
+                // Read an operator
                 TakeIt();
                 return TokenType.Operator;
+            }
+            else if (Reader.Current == ':')
+            {
+                // Read an :
+                // Is it a : or a :=
+                TakeIt();
+                if (Reader.Current == '=')
+                {
+                    TakeIt();
+                    return TokenType.Becomes;
+                }
+                else
+                {
+                    return TokenType.Colon;
+                }
+            }
+            else if (Reader.Current == ';')
+            {
+                TakeIt();
+                return TokenType.Semicolon;
+            }
+            else if (Reader.Current == '~')
+            {
+                TakeIt();
+                return TokenType.Semicolon;
+            }
+            else if (Reader.Current == '(')
+            {
+                TakeIt();
+                return TokenType.LeftBracket;
+            }
+            else if (Reader.Current == ')')
+            {
+                TakeIt();
+                return TokenType.RightBracket;
             }
             else if (Reader.Current == '\'')
             {
@@ -120,7 +170,16 @@ namespace Compiler.Tokenization
                 TakeIt();
 
                 // Take whatever the character is
-                TakeIt();
+                if (char.IsLetter(Reader.Current))
+                    TakeIt();
+                else if (char.IsDigit(Reader.Current))
+                    TakeIt();
+                else if (Reader.Current == '.')
+                    TakeIt();
+                else if (Reader.Current == '?')
+                    TakeIt();
+                else if (char.IsWhiteSpace(Reader.Current))
+                    TakeIt();
 
                 // Try getting the closing ' 
                 if (Reader.Current == '\'')
