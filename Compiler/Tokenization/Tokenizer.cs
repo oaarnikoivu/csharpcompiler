@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 using Compiler.IO;
 
 namespace Compiler.Tokenization
@@ -105,7 +106,7 @@ namespace Compiler.Tokenization
             {
                 // Reading an identifier
                 TakeIt();
-                while (Reader.Current == '_' && char.IsLetter(Reader.Current)) TakeIt();
+                while (Reader.Current == '_' || char.IsLetter(Reader.Current)) TakeIt();
                 while (char.IsLetterOrDigit(Reader.Current)) TakeIt();
 
                 if (TokenTypes.IsKeyword(TokenSpelling)) 
@@ -118,8 +119,8 @@ namespace Compiler.Tokenization
                 // Reading an integer
                 if (Reader.Current == '0')
                     TakeIt();
-                else if (Reader.Current > '0')
-                    while (char.IsDigit(Reader.Current))
+                else if (Reader.Current > '0') // non zero digit
+                    while (char.IsDigit(Reader.Current)) // digit
                         TakeIt();
                 return TokenType.IntLiteral;
             }
@@ -244,7 +245,7 @@ namespace Compiler.Tokenization
                 case '<':
                 case '>':
                 case '=':
-                case '\\':
+                case '!':
                     return true;
                 default:
                     return false;

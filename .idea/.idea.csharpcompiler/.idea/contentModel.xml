@@ -39,6 +39,7 @@
           <e p="ErrorNode.cs" t="Include" />
           <e p="ExpressionNodes" t="Include">
             <e p="BinaryExpressionNode.cs" t="Include" />
+            <e p="CallExpressionNode.cs" t="Include" />
             <e p="CharacterExpressionNode.cs" t="Include" />
             <e p="IdExpressionNode.cs" t="Include" />
             <e p="IntegerExpressionNode.cs" t="Include" />

@@ -192,6 +192,22 @@ namespace Compiler.SemanticAnalysis
             }
         }
 
+        private void PerformTypeCheckingOnForCommand(ForCommandNode forCommand)
+        {
+            PerformTypeChecking(forCommand.Identifier);
+            PerformTypeChecking(forCommand.AssignExpression);
+            PerformTypeChecking(forCommand.ToExpression);
+            PerformTypeChecking(forCommand.Command);
+            if (forCommand.AssignExpression.Type != StandardEnvironment.BooleanType)
+            {
+                // Error expression needs to be a boolean
+            }
+
+            if (forCommand.ToExpression.Type != StandardEnvironment.BooleanType)
+            {
+                // Error expression needs to be a boolean
+            }
+        }
 
 
         /// <summary>
@@ -315,6 +331,12 @@ namespace Compiler.SemanticAnalysis
                 }
                 unaryExpression.Type = GetReturnType(opDeclaration.Type);
             }
+        }
+
+        private void PerformTypeCheckingOnCallExpression(CallExpressionNode callExpression)
+        {
+            PerformTypeChecking(callExpression.Identifier);
+            PerformTypeChecking(callExpression.Parameter);
         }
 
 

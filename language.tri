@@ -1,18 +1,29 @@
 # This is my example programd
 let 
-	const myNum ~ 10;
+	const MAX ~ 10;
 	var n: Integer
 in
 	begin
 		getint(var n);
 		if n > 0 then
-			if n < myNum then
+			if n < MAX then
 				for i := 0 to 10 do
 					begin
 						putint(n); puteol();
 						n := n * i 
 					end
-				next 
+				next
+			else
+				if n = MAX then 
+					begin 
+						putint(n); puteol();
+						n := n / i
+					end
+				endif
+			else
+				begin
+					putint(n); puteol();
+				end
 			endif
 		endif
 	end	 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Diagnostics;
 using Compiler.IO;
 using Compiler.Tokenization;
 using Compiler.Nodes;
@@ -9,6 +10,7 @@ using Compiler.Nodes.Interfaces;
 using Compiler.Nodes.ParameterNodes;
 using Compiler.Nodes.TerminalNodes;
 using Compiler.Nodes.TypeDenoterNodes;
+using Debugger = Compiler.IO.Debugger;
 
 namespace Compiler.SyntaticAnalysis
 {
@@ -174,7 +176,7 @@ namespace Compiler.SyntaticAnalysis
                 return new ErrorNode(startPosition);
             }
         }
-
+        
         /// <summary>
         /// Parses an identifier
         /// </summary>
@@ -446,10 +448,23 @@ namespace Compiler.SyntaticAnalysis
         private IExpressionNode ParseIdExpression()
         {
             Debugger.Write("Parsing Call Expression or Identifier Expression");
+            Position startPosition = CurrentToken.Position;
             IdentifierNode identifier = ParseIdentifier();
-            return new IdExpressionNode(identifier);
+            if (CurrentToken.Type == TokenType.LeftBracket)
+            {
+                Debugger.Write("Parsing Call Expression");
+                Accept(TokenType.LeftBracket);
+                IParameterNode parameter = ParseParameter();
+                Accept(TokenType.RightBracket);
+                return new CallExpressionNode(identifier, parameter);
+            }
+            else
+            {
+                Debugger.Write("Parsing Identifier Expression");
+                return new IdExpressionNode(identifier);
+            }
         }
-
+        
         /// <summary>
         /// Parses a unary expresion
         /// </summary>

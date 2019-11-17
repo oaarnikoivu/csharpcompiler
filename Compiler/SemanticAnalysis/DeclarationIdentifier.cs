@@ -254,6 +254,16 @@ namespace Compiler.SemanticAnalysis
             PerformIdentification(unaryExpression.Expression);
         }
 
+        /// <summary>
+        /// Carries out identification on a call expression node
+        /// </summary>
+        /// <param name="callExpression">The node to perform identification on</param>
+        private void PerformIdentificationOnCallExpression(CallExpressionNode callExpression)
+        {
+            PerformIdentification(callExpression.Identifier);
+            PerformIdentification(callExpression.Parameter);
+        }
+
 
 
         /// <summary>

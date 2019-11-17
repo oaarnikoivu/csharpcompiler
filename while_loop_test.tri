@@ -1,0 +1,12 @@
+let
+	const myNum ~ 10;
+	var n: Integer
+in
+	begin
+		getint(var n);
+		while (n < myNum) do
+			begin
+				putint(n); puteol();
+				n := n + 1
+			end
+	end

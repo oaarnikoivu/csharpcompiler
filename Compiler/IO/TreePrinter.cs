@@ -201,6 +201,10 @@ namespace Compiler.IO
                 case WhileCommandNode whileCommand:
                     return NodeToString(lastChild, whileCommand, whileCommand.Expression, whileCommand.Command);
 
+                case ForCommandNode forCommand:
+                    return NodeToString(lastChild, forCommand, forCommand.Identifier, 
+                        forCommand.AssignExpression,
+                        forCommand.ToExpression, forCommand.Command);
                 // Declarations
                 case ConstDeclarationNode constDeclaration:
                     return NodeToString(lastChild, constDeclaration, constDeclaration.Identifier, constDeclaration.Expression);
@@ -227,6 +231,9 @@ namespace Compiler.IO
                 case UnaryExpressionNode unaryExpression:
                     return NodeToString(lastChild, unaryExpression, unaryExpression.Op, unaryExpression.Expression);
 
+                case CallExpressionNode callExpression:
+                    return NodeToString(lastChild, callExpression, callExpression.Identifier,
+                        callExpression.Parameter);
                 // Parameters
                 case BlankParameterNode blankParameter:
                     return NodeToString(lastChild, blankParameter);
