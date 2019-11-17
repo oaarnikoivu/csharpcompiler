@@ -1,5 +1,6 @@
 using Compiler.CodeGeneration;
 using Compiler.Nodes.Interfaces;
+using static Compiler.CodeGeneration.TriangleAbstractMachine;
 
 namespace Compiler.Nodes.StandardEnvironmentNodes
 {
@@ -21,7 +22,7 @@ namespace Compiler.Nodes.StandardEnvironmentNodes
         /// <summary>
         /// The built-in function that the declaration refers to
         /// </summary>
-        public TriangleAbstractMachine.Primitive Primitive { get; }
+        public Primitive Primitive { get; }
 
         /// <summary>
         /// The position in the code where the content associated with the node begins
@@ -36,8 +37,8 @@ namespace Compiler.Nodes.StandardEnvironmentNodes
         /// <param name="leftType">The type of the lefthand operand</param>
         /// <param name="rightType">The type of the righthand operand</param>
         /// <param name="returnType">The return type of the operation</param>
-        public BinaryOperationDeclarationNode(string name, TriangleAbstractMachine.Primitive primitive, SimpleTypeDeclarationNode leftType, SimpleTypeDeclarationNode rightType, SimpleTypeDeclarationNode returnType)
-        {
+        public BinaryOperationDeclarationNode(string name, Primitive primitive, SimpleTypeDeclarationNode leftType, SimpleTypeDeclarationNode rightType, SimpleTypeDeclarationNode returnType)
+                 {
             Name = name;
             Primitive = primitive;
             Type = new FunctionTypeDeclarationNode(returnType, (leftType, false), (rightType, false));

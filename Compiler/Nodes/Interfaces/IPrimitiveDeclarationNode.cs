@@ -1,4 +1,4 @@
-using Compiler.CodeGeneration;
+using static Compiler.CodeGeneration.TriangleAbstractMachine;
 
 namespace Compiler.Nodes.Interfaces
 {
@@ -10,6 +10,6 @@ namespace Compiler.Nodes.Interfaces
         /// <summary>
         /// The built-in function that the declaration refers to
         /// </summary>
-        TriangleAbstractMachine.Primitive Primitive { get; }
+        Primitive Primitive { get; }
     }
 }

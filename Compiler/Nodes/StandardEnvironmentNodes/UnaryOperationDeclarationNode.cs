@@ -1,5 +1,6 @@
 using Compiler.CodeGeneration;
 using Compiler.Nodes.Interfaces;
+using static Compiler.CodeGeneration.TriangleAbstractMachine;
 
 namespace Compiler.Nodes.StandardEnvironmentNodes
 {
@@ -21,7 +22,7 @@ namespace Compiler.Nodes.StandardEnvironmentNodes
         /// <summary>
         /// The built-in function that the declaration refers to
         /// </summary>
-        public TriangleAbstractMachine.Primitive Primitive { get; }
+        public Primitive Primitive { get; }
 
         /// <summary>
         /// The position in the code where the content associated with the node begins
@@ -35,7 +36,7 @@ namespace Compiler.Nodes.StandardEnvironmentNodes
         /// <param name="primitive">The built-in function that the declaration refers to</param>
         /// <param name="argumentType">The type of the operation argument</param>
         /// <param name="returnType">The return type of the operation</param>
-        public UnaryOperationDeclarationNode(string name, TriangleAbstractMachine.Primitive primitive, SimpleTypeDeclarationNode argumentType, SimpleTypeDeclarationNode returnType)
+        public UnaryOperationDeclarationNode(string name, Primitive primitive, SimpleTypeDeclarationNode argumentType, SimpleTypeDeclarationNode returnType)
         {
             Name = name;
             Primitive = primitive;

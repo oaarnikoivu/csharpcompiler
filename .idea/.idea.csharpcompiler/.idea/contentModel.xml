@@ -12,6 +12,7 @@
         </e>
         <e p="Compiler.cs" t="Include" />
         <e p="Compiler.csproj" t="IncludeRecursive" />
+        <e p="GlobalSuppressions.cs" t="Include" />
         <e p="IO" t="Include">
           <e p="Debugger.cs" t="Include" />
           <e p="ErrorReporter.cs" t="Include" />
@@ -91,10 +92,15 @@
         <e p="Properties" t="Include">
           <e p="launchSettings.json" t="Include" />
         </e>
+        <e p="SemanticAnalysis" t="Include">
+          <e p="DeclarationIdentifier.cs" t="Include" />
+          <e p="StandardEnvironment.cs" t="Include" />
+          <e p="SymbolTable.cs" t="Include" />
+          <e p="TypeChecker.cs" t="Include" />
+        </e>
         <e p="SyntaticAnalysis" t="Include">
           <e p="Parser.cs" t="Include" />
         </e>
-        <e p="Temp.cs" t="Include" />
         <e p="Tokenization" t="Include">
           <e p="Token.cs" t="Include" />
           <e p="Tokenizer.cs" t="Include" />

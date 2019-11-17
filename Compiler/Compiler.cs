@@ -3,6 +3,7 @@ using Compiler.Tokenization;
 using System.Collections.Generic;
 using System.IO;
 using Compiler.Nodes;
+using Compiler.SemanticAnalysis;
 using Compiler.SyntaticAnalysis;
 using static System.Console;
 
@@ -29,6 +30,16 @@ namespace Compiler
         /// The parser
         /// </summary>
         public Parser Parser { get;  }
+        
+        /// <summary>
+        /// The identifier
+        /// </summary>
+        public DeclarationIdentifier Identifier { get; }
+        
+        /// <summary>
+        /// The type checker
+        /// </summary>
+        public TypeChecker Checker { get; }
 
         /// <summary>
         /// Creates a new compiler
@@ -40,6 +51,8 @@ namespace Compiler
             Reader = new FileReader(inputFile);
             Tokenizer = new Tokenizer(Reader, Reporter);
             Parser = new Parser(Reporter);
+            Identifier = new DeclarationIdentifier(Reporter);
+            Checker = new TypeChecker(Reporter);
         }
 
         /// <summary>
@@ -60,6 +73,18 @@ namespace Compiler
             if (Reporter.HasErrors) return;
             WriteLine("Done");
             
+            // Identify
+            Write("Identifying...");
+            Identifier.PerformIdentification(tree);
+            if (Reporter.HasErrors) return;
+            WriteLine("Done");
+            
+            // Type check
+            Write("Type Checking...");
+            Checker.PerformTypeChecking(tree);
+            if (Reporter.HasErrors) return;
+            WriteLine("Done");
+
             WriteLine(TreePrinter.ToString(tree));
         }
 

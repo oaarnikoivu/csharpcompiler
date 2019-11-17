@@ -1,5 +1,6 @@
 using Compiler.CodeGeneration;
 using Compiler.Nodes.Interfaces;
+using static Compiler.CodeGeneration.TriangleAbstractMachine;
 
 namespace Compiler.Nodes.StandardEnvironmentNodes
 {
@@ -21,7 +22,7 @@ namespace Compiler.Nodes.StandardEnvironmentNodes
         /// <summary>
         /// The built-in function that the declaration refers to
         /// </summary>
-        public TriangleAbstractMachine.Primitive Primitive { get; }
+        public Primitive Primitive { get; }
 
         /// <summary>
         /// The position in the code where the content associated with the node begins
@@ -35,7 +36,7 @@ namespace Compiler.Nodes.StandardEnvironmentNodes
         /// <param name="primitive">The built-in function that the declaration refers to</param>
         /// <param name="returnType">The return type of the function</param>
         /// <param name="parameters">The parameters taken by the function</param>
-        public FunctionDeclarationNode(string name, TriangleAbstractMachine.Primitive primitive, SimpleTypeDeclarationNode returnType, params (SimpleTypeDeclarationNode type, bool byRef)[] parameters)
+        public FunctionDeclarationNode(string name, Primitive primitive, SimpleTypeDeclarationNode returnType, params (SimpleTypeDeclarationNode type, bool byRef)[] parameters)
         {
             Name = name;
             Primitive = primitive;

@@ -1,6 +1,5 @@
-using System;
 using Compiler.Nodes.Interfaces;
-using Compiler.CodeGeneration;
+using static Compiler.CodeGeneration.TriangleAbstractMachine;
 
 namespace Compiler.Nodes.StandardEnvironmentNodes
 {
@@ -22,19 +21,19 @@ namespace Compiler.Nodes.StandardEnvironmentNodes
         /// <summary>
         /// The size of the type on the target machine
         /// </summary>
-        public byte Size { get { return (TargetType != null && TriangleAbstractMachine.TypeSize.TryGetValue(TargetType.Value, out byte size)) ? size : (byte)0; } }
+        public byte Size { get { return (TargetType != null && TypeSize.TryGetValue(TargetType.Value, out byte size)) ? size : (byte)0; } }
 
         /// <summary>
         /// The type on the target machine that this type should be represented as
         /// </summary>
-        public TriangleAbstractMachine.Type? TargetType { get; }
+        public Type? TargetType { get; }
 
         /// <summary>
         /// Creates a new type declaration node
         /// </summary>
         /// <param name="name">The name of the type</param>
         /// <param name="targetType">The type on the target machine that this type should be represented as</param>
-        public SimpleTypeDeclarationNode(string name, TriangleAbstractMachine.Type? targetType = null)
+        public SimpleTypeDeclarationNode(string name, Type? targetType = null)
         {
             Name = name;
             TargetType = targetType;
