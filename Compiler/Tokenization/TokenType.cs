@@ -20,7 +20,7 @@ namespace Compiler.Tokenization
         EndOfText, Error, 
         
         // special error tokens
-        UnknownInputError, UnacceptabelSeqError
+        UnknownInputError, UnacceptableSeqError
         
     }
 

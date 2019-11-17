@@ -67,6 +67,10 @@ namespace Compiler.SyntaticAnalysis
                 Debugger.Write($"Accepted {CurrentToken}");
                 MoveNext();
             }
+            else
+            {
+                Reporter.AddError($"Error at {CurrentToken.Position} - Incorrect use of Token Type: {CurrentToken.Type}");
+            }
         }
         
         /// <summary>
@@ -300,6 +304,7 @@ namespace Compiler.SyntaticAnalysis
                 case TokenType.Var:
                     return ParseVarDeclaration();
                 default:
+                    Reporter.AddError("Error at: " + CurrentToken.Position + " could not parse a single declaration");
                     return new ErrorNode(CurrentToken.Position);
             }
         }

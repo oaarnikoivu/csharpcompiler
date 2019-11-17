@@ -80,13 +80,17 @@ namespace Compiler.Tokenization
 
         private void HandleTokenErrors(TokenType tokenType, Position tokenStartPosition, Token token)
         {
-            if (tokenType == TokenType.UnknownInputError)
-                Reporter.Errors.Append("\nError at: " + tokenStartPosition
-                                                      + " - Unknown input character " + token.Spelling);
-            else if (tokenType == TokenType.UnacceptabelSeqError)
-                Reporter.Errors.Append("\nError at: " + tokenStartPosition
-                                                      + " - Unacceptable sequences of input characters "
-                                                      + token.Spelling);
+            switch (tokenType)
+            {
+                case TokenType.UnknownInputError:
+                    Reporter.AddError("\nError at: " + tokenStartPosition
+                                                          + " - Unknown input character " + token.Spelling);
+                    break;
+                case TokenType.UnacceptableSeqError:
+                    Reporter.AddError("\nError at: " + tokenStartPosition
+                                                          + " - Unacceptable sequences of input characters ");
+                    break;
+            }
         }
 
         /// <summary>
@@ -198,7 +202,7 @@ namespace Compiler.Tokenization
                 }
                 else
                 {
-                    return TokenType.UnacceptabelSeqError;
+                    return TokenType.UnacceptableSeqError;
                 }
             }
             else if (IsOperator(Reader.Current))

@@ -1,3 +1,4 @@
+using System;
 using Compiler.IO;
 using Compiler.Tokenization;
 using System.Collections.Generic;
@@ -63,31 +64,52 @@ namespace Compiler
             // Tokenize
             Write("Tokenising...");
             List<Token> tokens = Tokenizer.GetAllTokens();
-            if (Reporter.HasErrors) return;
-            WriteLine("Done");
-            WriteLine(string.Join("\n", tokens));
+            
+            if (Reporter.HasErrors)
+            {
+                Reporter.DisplayErrors();
+                return;
+            }
+            else
+            {
+                WriteLine("Done");
+                WriteLine(string.Join("\n", tokens));
+            }
             
             // Parse
-            //WriteLine("Parsing...");
-            //ProgramNode tree = Parser.Parse(tokens);
-            //if (Reporter.HasErrors) return;
-            //WriteLine("Done");
+            WriteLine("Parsing...");
+            ProgramNode tree = Parser.Parse(tokens);
+            if (Reporter.HasErrors)
+            {
+                Reporter.DisplayErrors();
+                return;
+            }
+            else
+            {
+                WriteLine("Done");
+            }
+            
             
             // Identify
             //Write("Identifying...");
-            //Identifier.PerformIdentification(tree);
+           // Identifier.PerformIdentification(tree);
             //if (Reporter.HasErrors) return;
-            //WriteLine("Done");
+           // WriteLine("Done");
             
-            // Type check
-            //Write("Type Checking...");
-            //Checker.PerformTypeChecking(tree);
-            //if (Reporter.HasErrors) return;
-            //WriteLine("Done");
-
-            //WriteLine(TreePrinter.ToString(tree));
-            
-            WriteLine("\nErrors:" + Reporter.Errors);
+            //Type check
+           // Write("Type Checking...");
+           // Checker.PerformTypeChecking(tree);
+           // if (Reporter.HasErrors)
+          //  {
+          //      Reporter.DisplayErrors();
+          //      return;
+         //   }
+         //   else
+        //    {
+        //        WriteLine("Done");
+        //    }
+        
+            WriteLine(TreePrinter.ToString(tree));
         }
 
         /// <summary>
