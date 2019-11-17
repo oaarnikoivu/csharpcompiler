@@ -64,51 +64,28 @@ namespace Compiler
             // Tokenize
             Write("Tokenising...");
             List<Token> tokens = Tokenizer.GetAllTokens();
-            
-            if (Reporter.HasErrors)
-            {
-                Reporter.DisplayErrors();
-                return;
-            }
-            else
-            {
-                WriteLine("Done");
-                WriteLine(string.Join("\n", tokens));
-            }
+            if (Reporter.HasErrors) return;
+            WriteLine("Done");
             
             // Parse
             WriteLine("Parsing...");
             ProgramNode tree = Parser.Parse(tokens);
-            if (Reporter.HasErrors)
-            {
-                Reporter.DisplayErrors();
-                return;
-            }
-            else
-            {
-                WriteLine("Done");
-            }
-            
+            if (Reporter.HasErrors) return;
+            WriteLine(string.Join("\n", tokens));
+            WriteLine("Done");
             
             // Identify
-            //Write("Identifying...");
-           // Identifier.PerformIdentification(tree);
-            //if (Reporter.HasErrors) return;
-           // WriteLine("Done");
+            Write("Identifying...");
+            Identifier.PerformIdentification(tree);
+            if (Reporter.HasErrors) return;
+            WriteLine("Done");
             
-            //Type check
-           // Write("Type Checking...");
-           // Checker.PerformTypeChecking(tree);
-           // if (Reporter.HasErrors)
-          //  {
-          //      Reporter.DisplayErrors();
-          //      return;
-         //   }
-         //   else
-        //    {
-        //        WriteLine("Done");
-        //    }
-        
+            // Type check
+            Write("Type Checking...");
+            Checker.PerformTypeChecking(tree);
+            if (Reporter.HasErrors) return;
+            WriteLine("Done");
+            
             WriteLine(TreePrinter.ToString(tree));
         }
 
@@ -117,7 +94,14 @@ namespace Compiler
         /// </summary>
         private void WriteFinalMessage()
         {
-            // Write output to tell the user whether it worked or not here
+            if (Reporter.HasErrors)
+            {
+                Reporter.DisplayErrors();
+            }
+            else
+            {
+                WriteLine("Program has compiled successfully");
+            }
         }
 
         /// <summary>

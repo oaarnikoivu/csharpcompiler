@@ -15,7 +15,7 @@ namespace Compiler.IO
         /// <summary>
         /// Set of errors 
         /// </summary>
-        private HashSet<string> Errors { get; set; } = new HashSet<string>();
+        public List<string> Errors { get; set; } = new List<string>();
 
         /// <summary>
         /// Method for adding error to error set

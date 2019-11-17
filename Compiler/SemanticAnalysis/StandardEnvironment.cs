@@ -18,11 +18,22 @@ namespace Compiler.SemanticAnalysis
                 {IntegerType.Name, IntegerType},
                 {CharType.Name, CharType},
                 {BooleanType.Name, BooleanType},
+                {AnyType.Name, AnyType},
                 {VoidType.Name, VoidType},
                 
                 {True.Name, BooleanType},
                 {False.Name, BooleanType},
                 
+                {Plus.Name, Plus},
+                {Minus.Name, Minus},
+                {Multiply.Name, Multiply},
+                {Divide.Name, Divide},
+                {LessThan.Name, Divide},
+                {GreaterThan.Name, GreaterThan},
+                {Equal.Name, Equal},
+                {Not.Name, Not},
+
+
                 {Chr.Name, Chr},
                 {Ord.Name, Ord},
                 {Eof.Name, Eof},
@@ -46,7 +57,34 @@ namespace Compiler.SemanticAnalysis
         public static SimpleTypeDeclarationNode BooleanType { get; } = new SimpleTypeDeclarationNode("Boolean",
             BOOLEAN);
         
+        public static SimpleTypeDeclarationNode AnyType { get; } = new SimpleTypeDeclarationNode("Any");
+        
         public static SimpleTypeDeclarationNode VoidType { get; } = new SimpleTypeDeclarationNode("Void");
+        
+        // Operators
+        public static BinaryOperationDeclarationNode GreaterThan { get; } = new BinaryOperationDeclarationNode(">", 
+            GT, IntegerType, IntegerType, BooleanType);
+        
+        public static BinaryOperationDeclarationNode LessThan { get; } = new BinaryOperationDeclarationNode("<",
+            LT, IntegerType, IntegerType, BooleanType);
+        
+        public static BinaryOperationDeclarationNode Equal { get; } = new BinaryOperationDeclarationNode("=", 
+            EQ,  AnyType, AnyType, BooleanType);
+        
+        public static BinaryOperationDeclarationNode Plus { get; } = new BinaryOperationDeclarationNode("+", 
+            ADD, IntegerType, IntegerType, IntegerType);
+        
+        public static BinaryOperationDeclarationNode Minus { get; } = new BinaryOperationDeclarationNode("-", 
+            SUB, IntegerType, IntegerType, IntegerType);
+        
+        public static BinaryOperationDeclarationNode Multiply { get; } = new BinaryOperationDeclarationNode("*", 
+            MULT, IntegerType, IntegerType, IntegerType);
+        
+        public static BinaryOperationDeclarationNode Divide { get; } = new BinaryOperationDeclarationNode("/", 
+            DIV, IntegerType, IntegerType, IntegerType);
+        
+        public static UnaryOperationDeclarationNode Not { get; } = new UnaryOperationDeclarationNode("!", 
+            NOT, BooleanType, BooleanType);
         
         // Constants
         public static BuiltInConstDeclarationNode True { get; } = new BuiltInConstDeclarationNode("true", 

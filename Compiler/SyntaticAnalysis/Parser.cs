@@ -422,6 +422,7 @@ namespace Compiler.SyntaticAnalysis
                 case TokenType.LeftBracket:
                     return ParseBracketExpression();
                 default:
+                    Reporter.AddError("Error at: " + CurrentToken.Position + " could not parse primary expression");
                     return new ErrorNode(CurrentToken.Position);
             }
         }

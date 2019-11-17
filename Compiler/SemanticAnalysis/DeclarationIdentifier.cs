@@ -180,6 +180,8 @@ namespace Compiler.SemanticAnalysis
         {
             Token token = constDeclaration.Identifier.IdentifierToken;
             bool success = SymbolTable.Enter(token.Spelling, constDeclaration);
+            if (!success) Reporter.AddError($"Error at: {token.Position} - Could not perform identification on " +
+                                            $"const declaration {constDeclaration}");
             PerformIdentification(constDeclaration.Expression);
         }
 
@@ -202,6 +204,8 @@ namespace Compiler.SemanticAnalysis
             PerformIdentification(varDeclaration.TypeDenoter);
             Token token = varDeclaration.Identifier.IdentifierToken;
             bool success = SymbolTable.Enter(token.Spelling, varDeclaration);
+            if (!success) Reporter.AddError($"Error at: {token.Position} - Could not perform identification on " +
+                                            $"variable declaration {varDeclaration}");
         }
 
 
@@ -321,6 +325,7 @@ namespace Compiler.SemanticAnalysis
         {
             IDeclarationNode declaration = SymbolTable.Retrieve(identifier.IdentifierToken.Spelling);
             identifier.Declaration = declaration;
+            if (declaration == null) Reporter.AddError($"Error at: {identifier.Position} - null declaration");
         }
 
         /// <summary>
@@ -339,6 +344,7 @@ namespace Compiler.SemanticAnalysis
         {
             IDeclarationNode declaration = SymbolTable.Retrieve(operation.OperatorToken.Spelling);
             operation.Declaration = declaration;
+            if (declaration == null) Reporter.AddError($"Error at: {operation.Position} - null declaration");
         }
     }
 }
