@@ -73,12 +73,20 @@ namespace Compiler.Tokenization
             Debugger.Write($"Scanned {token}");
 
             // report error if necessary
-            if (tokenType == TokenType.Error)
-            {
-                Console.WriteLine("Error!");
-            }
+            HandleTokenErrors(tokenType, tokenStartPosition, token);
 
             return token;
+        }
+
+        private void HandleTokenErrors(TokenType tokenType, Position tokenStartPosition, Token token)
+        {
+            if (tokenType == TokenType.UnknownInputError)
+                Reporter.Errors.Append("\nError at: " + tokenStartPosition
+                                                      + " - Unknown input character " + token.Spelling);
+            else if (tokenType == TokenType.UnacceptabelSeqError)
+                Reporter.Errors.Append("\nError at: " + tokenStartPosition
+                                                      + " - Unacceptable sequences of input characters "
+                                                      + token.Spelling);
         }
 
         /// <summary>
@@ -190,7 +198,7 @@ namespace Compiler.Tokenization
                 }
                 else
                 {
-                    return TokenType.Error;
+                    return TokenType.UnacceptabelSeqError;
                 }
             }
             else if (IsOperator(Reader.Current))
@@ -206,7 +214,7 @@ namespace Compiler.Tokenization
             else
             {
                 TakeIt();
-                return TokenType.Error;
+                return TokenType.UnknownInputError;
             }
         }
 

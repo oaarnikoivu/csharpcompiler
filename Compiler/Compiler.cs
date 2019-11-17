@@ -68,24 +68,26 @@ namespace Compiler
             WriteLine(string.Join("\n", tokens));
             
             // Parse
-            WriteLine("Parsing...");
-            ProgramNode tree = Parser.Parse(tokens);
-            if (Reporter.HasErrors) return;
-            WriteLine("Done");
+            //WriteLine("Parsing...");
+            //ProgramNode tree = Parser.Parse(tokens);
+            //if (Reporter.HasErrors) return;
+            //WriteLine("Done");
             
             // Identify
-            Write("Identifying...");
-            Identifier.PerformIdentification(tree);
-            if (Reporter.HasErrors) return;
-            WriteLine("Done");
+            //Write("Identifying...");
+            //Identifier.PerformIdentification(tree);
+            //if (Reporter.HasErrors) return;
+            //WriteLine("Done");
             
             // Type check
-            Write("Type Checking...");
-            Checker.PerformTypeChecking(tree);
-            if (Reporter.HasErrors) return;
-            WriteLine("Done");
+            //Write("Type Checking...");
+            //Checker.PerformTypeChecking(tree);
+            //if (Reporter.HasErrors) return;
+            //WriteLine("Done");
 
-            WriteLine(TreePrinter.ToString(tree));
+            //WriteLine(TreePrinter.ToString(tree));
+            
+            WriteLine("\nErrors:" + Reporter.Errors);
         }
 
         /// <summary>

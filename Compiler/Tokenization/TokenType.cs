@@ -17,7 +17,10 @@ namespace Compiler.Tokenization
         Colon, Semicolon, Becomes, Is, LeftBracket, RightBracket, 
 
         // special tokens
-        EndOfText, Error
+        EndOfText, Error, 
+        
+        // special error tokens
+        UnknownInputError, UnacceptabelSeqError
         
     }
 
