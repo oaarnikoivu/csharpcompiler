@@ -187,8 +187,11 @@ namespace Compiler.IO
                     return NodeToString(lastChild, callCommand, callCommand.Identifier, callCommand.Parameter);
 
                 case IfCommandNode ifCommand:
-                    return NodeToString(lastChild, ifCommand, ifCommand.Expression, ifCommand.ThenCommand, ifCommand.ElseCommand);
+                    return NodeToString(lastChild, ifCommand, ifCommand.Expression, ifCommand.ThenCommand);
 
+                case IfElseCommandNode ifElseCommand:
+                    return NodeToString(lastChild, ifElseCommand, ifElseCommand.Expression, ifElseCommand.ThenCommand,
+                        ifElseCommand.ElseCommand);
                 case LetCommandNode letCommand:
                     return NodeToString(lastChild, letCommand, letCommand.Declaration, letCommand.Command);
 

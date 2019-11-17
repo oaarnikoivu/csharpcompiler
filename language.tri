@@ -27,6 +27,5 @@ in
 					end
 				endif
 			endif
-		else
 		endif
 	end	

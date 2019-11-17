@@ -27,6 +27,7 @@
             <e p="CallCommandNode.cs" t="Include" />
             <e p="ForCommandNode.cs" t="Include" />
             <e p="IfCommandNode.cs" t="Include" />
+            <e p="IfElseCommandNode.cs" t="Include" />
             <e p="LetCommandNode.cs" t="Include" />
             <e p="SequentialCommandNode.cs" t="Include" />
             <e p="WhileCommandNode.cs" t="Include" />

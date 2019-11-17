@@ -194,7 +194,7 @@ namespace Compiler.SyntaticAnalysis
         /// <summary>
         /// Parses an if command
         /// </summary>
-        private IfCommandNode ParseIfCommand()
+        private ICommandNode ParseIfCommand()
         {
             Debugger.Write("Parsing If Command");
             Position startPosition = CurrentToken.Position;
@@ -204,10 +204,15 @@ namespace Compiler.SyntaticAnalysis
             Accept(TokenType.RightBracket);
             Accept(TokenType.Then);
             ICommandNode thenCommand = ParseSingleCommand();
-            Accept(TokenType.Else);
-            ICommandNode elseCommand = ParseSingleCommand();
+            if (CurrentToken.Type == TokenType.Else)
+            {
+                Accept(TokenType.Else);
+                ICommandNode elseCommand = ParseSingleCommand();
+                Accept(TokenType.EndIf);
+                return new IfElseCommandNode(expression, thenCommand, elseCommand, startPosition);
+            }
             Accept(TokenType.EndIf);
-            return new IfCommandNode(expression, thenCommand, elseCommand, startPosition);
+            return new IfCommandNode(expression, thenCommand, startPosition);
         }
 
         /// <summary>
@@ -457,6 +462,7 @@ namespace Compiler.SyntaticAnalysis
             IdentifierNode identifier = ParseIdentifier();
             if (CurrentToken.Type == TokenType.LeftBracket)
             {
+                // Parse call expression
                 Debugger.Write("Parsing Call Expression");
                 Accept(TokenType.LeftBracket);
                 IParameterNode parameter = ParseParameter();

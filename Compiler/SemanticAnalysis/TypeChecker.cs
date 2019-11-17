@@ -151,8 +151,22 @@ namespace Compiler.SemanticAnalysis
         {
             PerformTypeChecking(ifCommand.Expression);
             PerformTypeChecking(ifCommand.ThenCommand);
-            PerformTypeChecking(ifCommand.ElseCommand);
             if (ifCommand.Expression.Type != StandardEnvironment.BooleanType)
+            {
+                // Error: expression needs to be a boolean
+            }
+        }
+
+        /// <summary>
+        /// Carries out type checking on an if else command node
+        /// </summary>
+        /// <param name="ifElseCommand"></param>
+        private void PerformTypeCheckingOnIfElseCommand(IfElseCommandNode ifElseCommand)
+        {
+            PerformTypeChecking(ifElseCommand.Expression);
+            PerformTypeChecking(ifElseCommand.ThenCommand);
+            PerformTypeChecking(ifElseCommand.ElseCommand);
+            if (ifElseCommand.Expression.Type != StandardEnvironment.BooleanType)
             {
                 // Error: expression needs to be a boolean
             }

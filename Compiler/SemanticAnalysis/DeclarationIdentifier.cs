@@ -123,7 +123,17 @@ namespace Compiler.SemanticAnalysis
         {
             PerformIdentification(ifCommand.Expression);
             PerformIdentification(ifCommand.ThenCommand);
-            PerformIdentification(ifCommand.ElseCommand);
+        }
+        
+        /// <summary>
+        /// Carries out identification on an if command node
+        /// </summary>
+        /// <param name="ifElseCommand">The node to perform identification on</param>
+        private void PerformIdentificationOnIfElseCommand(IfElseCommandNode ifElseCommand)
+        {
+            PerformIdentification(ifElseCommand.Expression);
+            PerformIdentification(ifElseCommand.ThenCommand);
+            PerformIdentification(ifElseCommand.ElseCommand);
         }
 
         /// <summary>
