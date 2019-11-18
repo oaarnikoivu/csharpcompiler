@@ -7,7 +7,15 @@
       <e p="Compiler" t="IncludeRecursive">
         <e p="bin" t="ExcludeRecursive" />
         <e p="CodeGeneration" t="Include">
+          <e p="Address.cs" t="Include" />
+          <e p="CodeGenerator.cs" t="Include" />
+          <e p="Instruction.cs" t="Include" />
           <e p="IRuntimeEntity.cs" t="Include" />
+          <e p="RuntimeKnownConstant.cs" t="Include" />
+          <e p="RuntimeUnknownConstant.cs" t="Include" />
+          <e p="RuntimeVariable.cs" t="Include" />
+          <e p="ScopeSizeRecorder.cs" t="Include" />
+          <e p="TargetCode.cs" t="Include" />
           <e p="TriangleAbstractMachine.cs" t="Include" />
         </e>
         <e p="Compiler.cs" t="Include" />
@@ -103,6 +111,7 @@
         <e p="SyntaticAnalysis" t="Include">
           <e p="Parser.cs" t="Include" />
         </e>
+        <e p="TargetCodeWriter.cs" t="Include" />
         <e p="Tokenization" t="Include">
           <e p="Token.cs" t="Include" />
           <e p="Tokenizer.cs" t="Include" />
