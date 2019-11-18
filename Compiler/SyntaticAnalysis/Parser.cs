@@ -70,7 +70,8 @@ namespace Compiler.SyntaticAnalysis
             }
             else
             {
-                Reporter.AddError($"Error at {CurrentToken.Position} - Incorrect use of Token Type: {CurrentToken.Type}");
+                Reporter.AddError($"Error at {CurrentToken.Position} " +
+                                  $"-> Incorrect use of Token Type: {CurrentToken.Type}");
             }
         }
         
@@ -101,7 +102,7 @@ namespace Compiler.SyntaticAnalysis
         /// </summary>
         private ICommandNode ParseCommand()
         {
-            Debugger.Write($"Parsing command");
+            Debugger.Write("Parsing command");
             List<ICommandNode> commands = new List<ICommandNode>();
             commands.Add(ParseSingleCommand());
             while (CurrentToken.Type == TokenType.Semicolon)

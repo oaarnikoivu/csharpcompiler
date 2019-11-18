@@ -1,17 +1,31 @@
-# This is an example program
-let
+# This is my example program
+let 
 	const MAX ~ 10;
-	var n: Integer
+	var n: Integer;
+	var i: Integer
 in
 	begin
 		getint(var n);
+		getint(var i);
 		if (n > 0) then
 			if (n < MAX) then
-				while (n > 0) do
+				for i := 0 to 10 do
 					begin
 						putint(n); puteol();
-						n := n-1
+						n := n * i 
 					end
+				next
+			else
+				if (n = MAX) then 
+					begin 
+						putint(n); puteol();
+						n := n / i
+					end
+				else
+					begin
+						putint(n); puteol();
+					end
+				endif
 			endif
 		endif
-	end
+	end	

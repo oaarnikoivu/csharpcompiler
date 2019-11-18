@@ -83,11 +83,11 @@ namespace Compiler.Tokenization
             switch (tokenType)
             {
                 case TokenType.UnknownInputError:
-                    Reporter.AddError("\nError at: " + tokenStartPosition
+                    Reporter.AddError("Error at: " + tokenStartPosition
                                                           + " - Unknown input character " + token.Spelling);
                     break;
                 case TokenType.UnacceptableSeqError:
-                    Reporter.AddError("\nError at: " + tokenStartPosition
+                    Reporter.AddError("Error at: " + tokenStartPosition
                                                           + " - Unacceptable sequences of input characters ");
                     break;
             }
@@ -182,7 +182,7 @@ namespace Compiler.Tokenization
                 // Read a '
                 TakeIt();
 
-                // Take whatever the character is
+                // Scan <graphic>
                 if (char.IsLetter(Reader.Current))
                     TakeIt();
                 else if (char.IsDigit(Reader.Current))
