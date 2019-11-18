@@ -28,7 +28,7 @@ namespace Compiler.SemanticAnalysis
                 {Minus.Name, Minus},
                 {Multiply.Name, Multiply},
                 {Divide.Name, Divide},
-                {LessThan.Name, Divide},
+                {LessThan.Name, LessThan},
                 {GreaterThan.Name, GreaterThan},
                 {Equal.Name, Equal},
                 {Not.Name, Not},

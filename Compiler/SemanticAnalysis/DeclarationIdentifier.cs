@@ -190,8 +190,8 @@ namespace Compiler.SemanticAnalysis
         {
             Token token = constDeclaration.Identifier.IdentifierToken;
             bool success = SymbolTable.Enter(token.Spelling, constDeclaration);
-            if (!success) Reporter.AddError($"Error at: {token.Position} - Could not perform identification on " +
-                                            $"const declaration {constDeclaration}");
+            if (!success) Reporter.AddError($"Error at: {token.Position} -> const declaration with {token.Spelling} already " +
+                                            $"exists in the current scope");
             PerformIdentification(constDeclaration.Expression);
         }
 
@@ -214,8 +214,8 @@ namespace Compiler.SemanticAnalysis
             PerformIdentification(varDeclaration.TypeDenoter);
             Token token = varDeclaration.Identifier.IdentifierToken;
             bool success = SymbolTable.Enter(token.Spelling, varDeclaration);
-            if (!success) Reporter.AddError($"Error at: {token.Position} - Could not perform identification on " +
-                                            $"variable declaration {varDeclaration}");
+            if (!success) Reporter.AddError($"Error at: {token.Position} -> var declaration with {token.Spelling} already " +
+                                            $"exists in the current scope");
         }
 
 
