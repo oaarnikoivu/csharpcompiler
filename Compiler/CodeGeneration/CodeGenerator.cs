@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Compiler.IO;
 using Compiler.Nodes;
 using System.Reflection;
@@ -11,6 +12,7 @@ using Compiler.Nodes.TerminalNodes;
 using Compiler.Nodes.TypeDenoterNodes;
 using static Compiler.CodeGeneration.TriangleAbstractMachine;
 using static System.Reflection.BindingFlags;
+using Debugger = Compiler.IO.Debugger;
 
 namespace Compiler.CodeGeneration
 {
@@ -137,7 +139,7 @@ namespace Compiler.CodeGeneration
             GenerateCodeFor(callCommand.Identifier);
             GenerateCodeFor(callCommand.Parameter);
         }
-
+        
         /// <summary>
         /// Generates code for an if command node
         /// </summary>
@@ -328,9 +330,18 @@ namespace Compiler.CodeGeneration
             GenerateCodeFor(unaryExpression.Expression);
             GenerateCodeFor(unaryExpression.Op);
         }
-
-
-
+        
+        /// <summary>
+        /// Generates code for a call expression node
+        /// </summary>
+        /// <param name="callExpression">The node to generate code for</param>
+        private void GenerateCodeForCallExpression(CallExpressionNode callExpression)
+        {
+            Debugger.Write("Generating code for Call Expression");
+            GenerateCodeFor(callExpression.Identifier);
+            GenerateCodeFor(callExpression.Parameter);
+        }
+        
         /// <summary>
         /// Generates code for a blank parameter node
         /// </summary>
@@ -419,7 +430,9 @@ namespace Compiler.CodeGeneration
             if (operation.Declaration is IPrimitiveDeclarationNode primativeDeclaration)
                 code.AddInstruction(OpCode.CALL, TriangleAbstractMachine.Register.PB, 0, (short)primativeDeclaration.Primitive);
             else
-                Debugger.Write("Error: The operator declaration isn't one of the built in operations and you should have picked this problem up during type checking");
+                Debugger.Write("Error: The operator declaration isn't " +
+                               "one of the built in operations and you should have picked " +
+                               "this problem up during type checking");
         }
     }
 }

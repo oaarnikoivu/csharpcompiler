@@ -200,9 +200,7 @@ namespace Compiler.SyntaticAnalysis
             Debugger.Write("Parsing If Command");
             Position startPosition = CurrentToken.Position;
             Accept(TokenType.If);
-            Accept(TokenType.LeftBracket);
-            IExpressionNode expression = ParseExpression();
-            Accept(TokenType.RightBracket);
+            IExpressionNode expression = ParseBracketExpression();
             Accept(TokenType.Then);
             ICommandNode thenCommand = ParseSingleCommand();
             if (CurrentToken.Type == TokenType.Else)
@@ -224,9 +222,7 @@ namespace Compiler.SyntaticAnalysis
             Debugger.Write("Parsing While Command");
             Position startPosition = CurrentToken.Position;
             Accept(TokenType.While);
-            Accept(TokenType.LeftBracket);
-            IExpressionNode expression = ParseExpression();
-            Accept(TokenType.RightBracket);
+            IExpressionNode expression = ParseBracketExpression();
             Accept(TokenType.Do);
             ICommandNode command = ParseSingleCommand();
             return new WhileCommandNode(expression, command, startPosition);
@@ -464,17 +460,28 @@ namespace Compiler.SyntaticAnalysis
             if (CurrentToken.Type == TokenType.LeftBracket)
             {
                 // Parse call expression
-                Debugger.Write("Parsing Call Expression");
-                Accept(TokenType.LeftBracket);
-                IParameterNode parameter = ParseParameter();
-                Accept(TokenType.RightBracket);
-                return new CallExpressionNode(identifier, parameter);
+                return ParseCallExpression(identifier);
+
             }
             else
             {
                 Debugger.Write("Parsing Identifier Expression");
                 return new IdExpressionNode(identifier);
             }
+        }
+
+        /// <summary>
+        /// Parses a call expression
+        /// </summary>
+        /// <param name="identifier"></param>
+        /// <returns></returns>
+        private IExpressionNode ParseCallExpression(IdentifierNode identifier)
+        {
+            Debugger.Write("Parsing Call Expression");
+            Accept(TokenType.LeftBracket);
+            IParameterNode parameter = ParseParameter();
+            Accept(TokenType.RightBracket);
+            return new CallExpressionNode(identifier, parameter);
         }
         
         /// <summary>
