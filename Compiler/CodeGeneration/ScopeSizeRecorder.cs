@@ -60,6 +60,7 @@ namespace Compiler.CodeGeneration
             {
                 DeclarationsSize.Push(short.MaxValue);
                 // Error: Too much memory taken by local declarations
+                Reporter.AddError($"Error with {DeclarationsSize} -> Too much memory taken by local declarations");
             }
         }
     }

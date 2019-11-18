@@ -171,9 +171,12 @@ namespace Compiler.SemanticAnalysis
         /// <summary>
         /// Carries out identification on a for command node
         /// </summary>
-        /// <param name="whileCommand">The node to perform identification on</param>
+        /// <param name="forCommand">The node to perform identification on</param>
         private void PerformIdentificationOnForCommand(ForCommandNode forCommand)
         {
+            IDeclarationNode declaration = SymbolTable.Retrieve(forCommand.Identifier.IdentifierToken.Spelling);
+            forCommand.Identifier.Declaration = declaration;
+
             PerformIdentification(forCommand.Identifier);
             PerformIdentification(forCommand.AssignExpression);
             PerformIdentification(forCommand.ToExpression);
@@ -211,11 +214,12 @@ namespace Compiler.SemanticAnalysis
         /// <param name="varDeclaration">The node to perform identification on</param>
         private void PerformIdentificationOnVarDeclaration(VarDeclarationNode varDeclaration)
         {
-            PerformIdentification(varDeclaration.TypeDenoter);
             Token token = varDeclaration.Identifier.IdentifierToken;
             bool success = SymbolTable.Enter(token.Spelling, varDeclaration);
             if (!success) Reporter.AddError($"Error at: {token.Position} -> var declaration with {token.Spelling} already " +
                                             $"exists in the current scope");
+            
+            PerformIdentification(varDeclaration.TypeDenoter);
         }
 
 

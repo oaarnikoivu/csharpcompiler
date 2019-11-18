@@ -1,6 +1,7 @@
 using Compiler.IO;
 using Compiler.Nodes;
 using System.Reflection;
+using System.Runtime.InteropServices.ComTypes;
 using Compiler.Nodes.CommandNodes;
 using Compiler.Nodes.DeclarationNodes;
 using Compiler.Nodes.ExpressionNodes;
@@ -109,6 +110,12 @@ namespace Compiler.CodeGeneration
         private void GenerateCodeForAssignCommand(AssignCommandNode assignCommand)
         {
             Debugger.Write("Generating code for Assign Command");
+            GenerateCodeFor(assignCommand.Expression);
+            if (assignCommand.Identifier.Declaration is IVariableDeclarationNode varDeclaration)
+                code.AddInstruction(varDeclaration.RuntimeEntity.GenerateInstructionToStore());
+            else 
+                Debugger.Write("The identifier is not a variable and you should have picked this problem up " +
+                               "during type checking.");
         }
 
         /// <summary>
@@ -147,6 +154,24 @@ namespace Compiler.CodeGeneration
             code.PatchInstructionToJumpHere(ifJumpAddress);
             code.PatchInstructionToJumpHere(thenJumpAddress);
         }
+        
+        /// <summary>
+        /// Generates code for an if else command node
+        /// </summary>
+        /// <param name="ifCommand">The node to generate code for</param>
+        private void GenerateCodeForIfElseCommand(IfElseCommandNode ifElseCommand)
+        {
+            Debugger.Write("Generating code for If Else Command");
+            GenerateCodeFor(ifElseCommand.Expression);
+            Address ifJumpAddress = code.NextAddress;
+            code.AddInstruction(OpCode.JUMPIF, Register.CB, FalseValue, 0);
+            GenerateCodeFor(ifElseCommand.ThenCommand);
+            Address thenJumpAddress = code.NextAddress;
+            code.AddInstruction(OpCode.JUMP, Register.CB, 0, 0);
+            code.PatchInstructionToJumpHere(ifJumpAddress);
+            GenerateCodeFor(ifElseCommand.ElseCommand);
+            code.PatchInstructionToJumpHere(thenJumpAddress);
+        }
 
         /// <summary>
         /// Generates code for a let command node
@@ -169,6 +194,10 @@ namespace Compiler.CodeGeneration
         private void GenerateCodeForSequentialCommand(SequentialCommandNode sequentialCommand)
         {
             Debugger.Write("Generating code for Sequential Command");
+            foreach (var command in sequentialCommand.Commands)
+            {
+                GenerateCodeFor(command);
+            }
         }
 
         /// <summary>
@@ -182,10 +211,21 @@ namespace Compiler.CodeGeneration
             Address whileJumpAddress = code.NextAddress;
             code.AddInstruction(OpCode.JUMPIF, Register.CB, FalseValue, 0);
             GenerateCodeFor(whileCommand.Command);
+            code.PatchInstructionToJumpHere(whileJumpAddress);
         }
 
-
-
+        /// <summary>
+        /// Generates code for a for command node
+        /// </summary>
+        /// <param name="forCommand"></param>
+        private void GenerateCodeForForCommand(ForCommandNode forCommand)
+        {
+            Debugger.Write("Generating code for For Command");
+            GenerateCodeFor(forCommand.AssignExpression);
+            GenerateCodeFor(forCommand.ToExpression);
+            GenerateCodeFor(forCommand.Command);
+        }
+        
         /// <summary>
         /// Generates code for a const declaration node
         /// </summary>
@@ -263,6 +303,9 @@ namespace Compiler.CodeGeneration
         private void GenerateCodeForIdExpression(IdExpressionNode idExpression)
         {
             Debugger.Write("Generating code for ID Expression");
+            IEntityDeclarationNode entityDeclaration = (IEntityDeclarationNode) idExpression.Identifier.Declaration;
+            IRuntimeEntity item = entityDeclaration.RuntimeEntity;
+            code.AddInstruction(item.GenerateInstructionToLoad());
         }
 
         /// <summary>
