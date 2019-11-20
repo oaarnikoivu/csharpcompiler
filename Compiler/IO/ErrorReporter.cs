@@ -20,37 +20,14 @@ namespace Compiler.IO
         {
             get { return ErrorCount > 0; }
         }
+        
+        public List<String> Errors { get; private set; } = new List<string>();
 
         public void ReportError(string message)
         {
             ErrorCount += 1;
+            Errors.Add(message);
             Console.WriteLine($"ERROR: {message}");
-        }
-
-        /// <summary>
-        /// Set of errors 
-        /// </summary>
-        public List<string> Errors { get; set; } = new List<string>();
-
-        /// <summary>
-        /// Method for adding error to error set
-        /// </summary>
-        /// <param name="error"></param>
-        public void AddError(string error)
-        {
-            Errors.Add(error);
-        }
-
-        /// <summary>
-        /// Display all errors in set
-        /// </summary>
-        public void DisplayErrors()
-        {
-            Console.WriteLine("\nErrors:");
-            foreach (var error in Errors)
-            {
-                Console.WriteLine(error);
-            }
         }
         
     }

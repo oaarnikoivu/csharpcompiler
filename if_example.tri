@@ -1,0 +1,15 @@
+# Testing erros on if statements
+let 
+	var n: Integer;
+	var c: Char
+in
+	begin
+		getint(var n);
+		get(var c);
+		if (n > 0) then
+			begin
+				putint(n); puteol();
+				n := n -1
+			end
+		endif
+	end

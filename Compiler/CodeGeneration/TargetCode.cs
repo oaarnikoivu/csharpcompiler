@@ -68,8 +68,7 @@ namespace Compiler.CodeGeneration
             if (IsFull)
             {
                 // Error - Out of space to store program - added too many instructions
-                Reporter.AddError($"Error with: {instruction} " +
-                                  $"-> Out of space to store program, added too many instructions.");
+                Reporter.ReportError($"Out of space to store program, added too many instructions: {instruction}");
             }
             else
                 Instructions.Add(instruction);

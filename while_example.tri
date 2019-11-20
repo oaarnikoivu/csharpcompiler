@@ -1,0 +1,9 @@
+# Testing while loops
+let 
+	var n: Integer
+in
+	begin
+		getint(var n);
+		while (n) do 
+			n := n + 1
+	end

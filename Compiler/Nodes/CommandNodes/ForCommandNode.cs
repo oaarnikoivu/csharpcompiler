@@ -15,12 +15,13 @@ namespace Compiler.Nodes.CommandNodes
         /// <summary>
         /// 
         /// </summary>
-        public IExpressionNode BecomesExpression { get; }
+        public ICommandNode AssignCommand { get; }
         
         /// <summary>
         /// The to expression condition associated with the node
         /// </summary>
         public IExpressionNode ToExpression { get; }
+        
         
         /// <summary>
         /// The command associated with the node 
@@ -35,14 +36,15 @@ namespace Compiler.Nodes.CommandNodes
         /// <summary>
         /// Creates a new for node
         /// </summary>
+        /// <param name="assignCommand"></param>
         /// <param name="toExpression"></param>
         /// <param name="command"></param>
         /// <param name="position"></param>
-        public ForCommandNode(IDeclarationNode varDeclaration, IExpressionNode becomesExpression, 
-            IExpressionNode toExpression, ICommandNode command, Position position)
+        /// <param name="becomesExpression"></param>
+        public ForCommandNode(IDeclarationNode varDeclaration, ICommandNode assignCommand, IExpressionNode toExpression, ICommandNode command, Position position)
         {
             VarDeclaration = varDeclaration;
-            BecomesExpression = becomesExpression;
+            AssignCommand = assignCommand;
             ToExpression = toExpression;
             Command = command;
             Position = position;

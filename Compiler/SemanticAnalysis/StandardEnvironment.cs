@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using Compiler.Nodes.Interfaces;
@@ -39,7 +38,7 @@ namespace Compiler.SemanticAnalysis
                 {GreaterThan.Name, GreaterThan},
                 {Equal.Name, Equal},
                 {Not.Name, Not},
-                
+
                 {Chr.Name, Chr},
                 {Ord.Name, Ord},
                 {Eof.Name, Eof},

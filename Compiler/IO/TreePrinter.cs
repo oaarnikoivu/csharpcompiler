@@ -205,7 +205,7 @@ namespace Compiler.IO
                     return NodeToString(lastChild, whileCommand, whileCommand.Expression, whileCommand.Command);
 
                 case ForCommandNode forCommand:
-                    return NodeToString(lastChild, forCommand, forCommand.VarDeclaration, forCommand.BecomesExpression,
+                    return NodeToString(lastChild, forCommand, forCommand.VarDeclaration, forCommand.AssignCommand,
                         forCommand.ToExpression, forCommand.Command);
                 // Declarations
                 case ConstDeclarationNode constDeclaration:

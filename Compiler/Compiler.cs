@@ -123,8 +123,17 @@ namespace Compiler
         /// </summary>
         private void WriteFinalMessage()
         {
-            if (Reporter.HasErrors) return;
-            else WriteLine("Program has compiled successfully");
+            if (Reporter.HasErrors)
+            {
+                WriteLine("\nFailed to compile"!);
+                Reporter.Errors.ForEach(error =>
+                {
+                    WriteLine(error);
+                });
+                return;
+            }
+            else 
+                WriteLine("Program has compiled successfully");
         }
 
         /// <summary>

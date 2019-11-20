@@ -1,0 +1,16 @@
+# Testing binary ops
+let
+	var n: Integer;
+	var i: Integer;
+	var flag: Boolean
+in
+	begin
+		getint(var n);
+		if (n > 0) then
+			begin
+				putint(n); puteol();
+				n := n * i
+			end
+		endif
+	end
+
