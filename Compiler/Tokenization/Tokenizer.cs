@@ -83,12 +83,11 @@ namespace Compiler.Tokenization
             switch (tokenType)
             {
                 case TokenType.UnknownInputError:
-                    Reporter.AddError("Error at: " + tokenStartPosition
-                                                          + " - Unknown input character " + token.Spelling);
+                    Reporter.ReportError($"Unknown input character: {token.Spelling} " +
+                                         $"at position: {tokenStartPosition}");
                     break;
                 case TokenType.UnacceptableSeqError:
-                    Reporter.AddError("Error at: " + tokenStartPosition
-                                                          + " - Unacceptable sequences of input characters ");
+                    Reporter.ReportError($"Unacceptable sequences of input characters at: {tokenStartPosition}");
                     break;
             }
         }

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Compiler.CodeGeneration;
 using Compiler.IO;
 using Compiler.Tokenization;
 using Compiler.Nodes;
@@ -70,8 +71,8 @@ namespace Compiler.SyntaticAnalysis
             }
             else
             {
-                Reporter.AddError($"Error at {CurrentToken.Position} " +
-                                  $"-> Incorrect use of Token Type: {CurrentToken.Type}");
+                Reporter.ReportError($"Incorrect use of token type: {CurrentToken.Type} " +
+                                     $"at position: {CurrentToken.Position}");
             }
         }
         
@@ -188,9 +189,9 @@ namespace Compiler.SyntaticAnalysis
         private IdentifierNode ParseIdentifier()
         {
             Debugger.Write("Parsing Identifier");
-            Token IdentifierToken = CurrentToken;
+            Token identifierToken = CurrentToken;
             Accept(TokenType.Identifier);
-            return new IdentifierNode(IdentifierToken);
+            return new IdentifierNode(identifierToken);
         }
 
         /// <summary>
@@ -262,16 +263,15 @@ namespace Compiler.SyntaticAnalysis
         {
             Debugger.Write("Parsing For Command");
             Position startPosition = CurrentToken.Position;
-            Accept(TokenType.For);
-            IdentifierNode identifier = ParseIdentifier();
+            IDeclarationNode declaration = ParseVarDeclaration();
             Accept(TokenType.Becomes);
-            IExpressionNode assignExpression = ParseExpression();
+            IExpressionNode becomesExpression = ParseExpression();
             Accept(TokenType.To);
             IExpressionNode toExpression = ParseExpression();
             Accept(TokenType.Do);
             ICommandNode command = ParseSingleCommand();
             Accept(TokenType.Next);
-            return new ForCommandNode(identifier, assignExpression, toExpression, command, startPosition);
+            return new ForCommandNode(declaration, becomesExpression, toExpression, command, startPosition);
         }
 
         /// <summary>
@@ -307,8 +307,9 @@ namespace Compiler.SyntaticAnalysis
                 case TokenType.Var:
                     return ParseVarDeclaration();
                 default:
-                    Reporter.AddError("Error at: " + CurrentToken.Position + " could not parse a single declaration");
+                    Reporter.ReportError($"Could not parse single declaration at: {CurrentToken.Position}");
                     return new ErrorNode(CurrentToken.Position);
+                    
             }
         }
 
@@ -333,11 +334,28 @@ namespace Compiler.SyntaticAnalysis
         {
             Debugger.Write("Parsing Var Declaration");
             Position startPosition = CurrentToken.Position;
-            Accept(TokenType.Var);
-            IdentifierNode identifier = ParseIdentifier();
-            Accept(TokenType.Colon);
-            TypeDenoterNode typeDenoter = ParseTypeDenoter();
-            return new VarDeclarationNode(identifier, typeDenoter, startPosition);
+            if (CurrentToken.Type == TokenType.Var)
+            {
+                Accept(TokenType.Var);
+                IdentifierNode identifier = ParseIdentifier();
+                Accept(TokenType.Colon);
+                TypeDenoterNode typeDenoter = ParseTypeDenoter();
+                return new VarDeclarationNode(identifier, typeDenoter, startPosition);
+            }
+            else if (CurrentToken.Type == TokenType.For) // Declare I as a new variable of type integer with undefined value
+            {
+                Accept(TokenType.For);
+                IdentifierNode identifier = ParseIdentifier();
+                return new VarDeclarationNode(identifier, 
+                    new TypeDenoterNode(
+                        new IdentifierNode(
+                            new Token(TokenType.Identifier, "Integer", startPosition))), startPosition);
+            }
+            else
+            {
+                return new ErrorNode(startPosition);
+            }
+
         }
 
         /// <summary>
@@ -425,7 +443,7 @@ namespace Compiler.SyntaticAnalysis
                 case TokenType.LeftBracket:
                     return ParseBracketExpression();
                 default:
-                    Reporter.AddError("Error at: " + CurrentToken.Position + " could not parse primary expression");
+                    Reporter.ReportError($"Could not parse primary expression at: {CurrentToken.Position}");
                     return new ErrorNode(CurrentToken.Position);
             }
         }

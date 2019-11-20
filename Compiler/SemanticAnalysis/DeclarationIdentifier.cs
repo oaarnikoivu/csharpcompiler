@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Reflection;
+using Compiler.CodeGeneration;
 using Compiler.IO;
 using Compiler.Nodes;
 using Compiler.Nodes.CommandNodes;
@@ -93,8 +94,8 @@ namespace Compiler.SemanticAnalysis
         /// <param name="assignCommand">The node to perform identification on</param>
         private void PerformIdentificationOnAssignCommand(AssignCommandNode assignCommand)
         {
-            PerformIdentification(assignCommand.Identifier);
             PerformIdentification(assignCommand.Expression);
+            PerformIdentification(assignCommand.Identifier);
         }
 
         /// <summary>
@@ -111,8 +112,8 @@ namespace Compiler.SemanticAnalysis
         /// <param name="callCommand">The node to perform identification on</param>
         private void PerformIdentificationOnCallCommand(CallCommandNode callCommand)
         {
-            PerformIdentification(callCommand.Identifier);
             PerformIdentification(callCommand.Parameter);
+            PerformIdentification(callCommand.Identifier);
         }
 
         /// <summary>
@@ -174,13 +175,12 @@ namespace Compiler.SemanticAnalysis
         /// <param name="forCommand">The node to perform identification on</param>
         private void PerformIdentificationOnForCommand(ForCommandNode forCommand)
         {
-            IDeclarationNode declaration = SymbolTable.Retrieve(forCommand.Identifier.IdentifierToken.Spelling);
-            forCommand.Identifier.Declaration = declaration;
-
-            PerformIdentification(forCommand.Identifier);
-            PerformIdentification(forCommand.AssignExpression);
+            SymbolTable.OpenScope();
+            PerformIdentification(forCommand.VarDeclaration);
+            PerformIdentification(forCommand.BecomesExpression);
             PerformIdentification(forCommand.ToExpression);
             PerformIdentification(forCommand.Command);
+            SymbolTable.CloseScope();
         }
 
 
@@ -193,8 +193,8 @@ namespace Compiler.SemanticAnalysis
         {
             Token token = constDeclaration.Identifier.IdentifierToken;
             bool success = SymbolTable.Enter(token.Spelling, constDeclaration);
-            if (!success) Reporter.AddError($"Error at: {token.Position} -> const declaration with {token.Spelling} already " +
-                                            $"exists in the current scope");
+            if (!success) Reporter.ReportError($"Const declaration with {token.Spelling} at position: " +
+                                               $"{token.Position} already exists in the current scope");
             PerformIdentification(constDeclaration.Expression);
         }
 
@@ -216,9 +216,8 @@ namespace Compiler.SemanticAnalysis
         {
             Token token = varDeclaration.Identifier.IdentifierToken;
             bool success = SymbolTable.Enter(token.Spelling, varDeclaration);
-            if (!success) Reporter.AddError($"Error at: {token.Position} -> var declaration with {token.Spelling} already " +
-                                            $"exists in the current scope");
-            
+            if (!success) Reporter.ReportError($"Var declaration with {token.Spelling} at position: " +
+                                               $"{token.Position} already exists in the current scope");
             PerformIdentification(varDeclaration.TypeDenoter);
         }
 
@@ -339,7 +338,7 @@ namespace Compiler.SemanticAnalysis
         {
             IDeclarationNode declaration = SymbolTable.Retrieve(identifier.IdentifierToken.Spelling);
             identifier.Declaration = declaration;
-            if (declaration == null) Reporter.AddError($"Error at: {identifier.Position} - null declaration");
+            if (declaration == null) Reporter.ReportError($"Null declaration at: {identifier.Position}");
         }
 
         /// <summary>
@@ -358,7 +357,7 @@ namespace Compiler.SemanticAnalysis
         {
             IDeclarationNode declaration = SymbolTable.Retrieve(operation.OperatorToken.Spelling);
             operation.Declaration = declaration;
-            if (declaration == null) Reporter.AddError($"Error at: {operation.Position} - null declaration");
+            if (declaration == null) Reporter.ReportError($"Null declaration at {operation.Position}");
         }
     }
 }

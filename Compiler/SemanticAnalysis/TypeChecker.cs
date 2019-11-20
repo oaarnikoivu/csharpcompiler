@@ -86,17 +86,18 @@ namespace Compiler.SemanticAnalysis
         {
             PerformTypeChecking(assignCommand.Identifier);
             PerformTypeChecking(assignCommand.Expression);
+            
             if (!(assignCommand.Identifier.Declaration is IVariableDeclarationNode varDeclaration))
             {
                 // Error - identifier is not a variable
-                Reporter.AddError($"Error at: {assignCommand.Identifier.Position} " +
-                                  $"-> {assignCommand.Identifier} is not a variable");
+                Reporter.ReportError($"{assignCommand.Identifier} at {assignCommand.Position} " +
+                                     $"is not a variable");
             }
             else if (varDeclaration.EntityType != assignCommand.Expression.Type)
             {
                 // Error - expression is wrong type for the variable
-                Reporter.AddError($"Error at: {varDeclaration.EntityType.Position} " +
-                                  $"-> {assignCommand.Expression.Type} is the wrong type");
+                Reporter.ReportError($"{assignCommand.Expression.Type} at " +
+                                     $"{assignCommand.Expression.Position} is the wrong type");
             }
         }
 
@@ -107,7 +108,7 @@ namespace Compiler.SemanticAnalysis
         private void PerformTypeCheckingOnBlankCommand(BlankCommandNode blankCommand)
         {
         }
-
+        
         /// <summary>
         /// Carries out type checking on a call command node
         /// </summary>
@@ -119,16 +120,15 @@ namespace Compiler.SemanticAnalysis
             if (!(callCommand.Identifier.Declaration is FunctionDeclarationNode functionDeclaration))
             {
                 // Error: Identifier is not a function
-                Reporter.AddError($"Error at: {callCommand.Identifier.Position} " +
-                                  $"-> {callCommand.Identifier} is not a function");
+                Reporter.ReportError($"{callCommand.Identifier.Declaration} at {callCommand.Position} is not a function");
             }
             else if (GetNumberOfArguments(functionDeclaration.Type) == 0)
             {
                 if (!(callCommand.Parameter is BlankParameterNode))
                 {
                     // Error: function takes no arguments but is called with one
-                    Reporter.AddError($"Error at: {callCommand.Parameter.Position} " +
-                                      $"-> functions takes no arguments but is called with one");
+                    Reporter.ReportError($"{callCommand.Parameter} at {callCommand.Position} " +
+                                         $"takes no arguments but is called with one");
                 }
             }
             else
@@ -136,22 +136,40 @@ namespace Compiler.SemanticAnalysis
                 if (callCommand.Parameter is BlankParameterNode)
                 {
                     // Error: function takes an argument but is called without one
-                    Reporter.AddError($"Error at: {callCommand.Parameter.Position} " +
-                                      $"-> function takes an argument but is called without one");
+                    Reporter.ReportError($"{callCommand.Parameter} at {callCommand.Position} " +
+                                         $"takes an argument but is called without one");
                 }
                 else
                 {
                     if (GetArgumentType(functionDeclaration.Type, 0) != callCommand.Parameter.Type)
                     {
                         // Error: Function called with parameter of the wrong type
-                        Reporter.AddError($"Error at: {functionDeclaration.Position} " +
-                                          $"-> Function called with parameter of the wrong type");
+                        Reporter.ReportError($"{callCommand.Parameter.Type} at {callCommand.Parameter.Position} " +
+                                             $"is called with parameter of the wrong type, should be: {functionDeclaration.Type}");
                     }
                     if (ArgumentPassedByReference(functionDeclaration.Type, 0) && !(callCommand.Parameter is VarParameterNode))
                     {
                         // Error: Function requires a var parameter but has been given an expression parameter
-                        Reporter.AddError($"Error at: {functionDeclaration.Position} " +
-                                          $"-> Function requires a var parameter but has been given an expression parameter");
+                        Reporter.ReportError($"{callCommand.Parameter} at {callCommand.Position} " +
+                                             $"requires a variable parameter but has been provided an expression parameter");
+                    }
+                    if (ArgumentPassedByReference(functionDeclaration.Type, 0))
+                    {
+                        if (!(callCommand.Parameter is VarParameterNode))
+                        {
+                            // Error: Function requires a var parameter but has been given an expression parameter
+                            Reporter.ReportError($"{callCommand.Parameter} at {callCommand.Position} " +
+                                                 $"requires a variable parameter but has been given an expression parameter");
+                        }
+                    }
+                    else
+                    {
+                        if (!(callCommand.Parameter is ExpressionParameterNode))
+                        {
+                            // Error: Function requires an expression parameter but has been given a var parameter
+                            Reporter.ReportError($"{callCommand.Parameter} at {callCommand.Position} requires an expression parameter " +
+                                                 $"but has been given a variable parameter");
+                        }
                     }
                 }
             }
@@ -164,7 +182,7 @@ namespace Compiler.SemanticAnalysis
         private void PerformTypeCheckingOnIfCommand(IfCommandNode ifCommand)
         {
             PerformTypeChecking(ifCommand.Expression);
-            PerformTypeChecking(ifCommand.ThenCommand);
+            PerformTypeChecking(ifCommand.ThenCommand):;
             if (ifCommand.Expression.Type != StandardEnvironment.BooleanType)
             {
                 Reporter.AddError($"Error at: {ifCommand.Position} " +
@@ -216,6 +234,7 @@ namespace Compiler.SemanticAnalysis
         {
             PerformTypeChecking(whileCommand.Expression);
             PerformTypeChecking(whileCommand.Command);
+            
             if (whileCommand.Expression.Type != StandardEnvironment.BooleanType)
             {
                 // Error: expression needs to be a boolean
@@ -226,20 +245,21 @@ namespace Compiler.SemanticAnalysis
 
         private void PerformTypeCheckingOnForCommand(ForCommandNode forCommand)
         {
-            PerformTypeChecking(forCommand.Identifier);
-            PerformTypeChecking(forCommand.AssignExpression);
+            PerformTypeChecking(forCommand.VarDeclaration);
+            PerformTypeChecking(forCommand.BecomesExpression);
             PerformTypeChecking(forCommand.ToExpression);
             PerformTypeChecking(forCommand.Command);
-            if (forCommand.AssignExpression.Type != StandardEnvironment.IntegerType)
+            
+            if (forCommand.BecomesExpression.Type != StandardEnvironment.IntegerType)
             {
                 // Error expression needs to be an integer
-                Reporter.AddError($"Error at: {forCommand.AssignExpression.Position} " +
+                Reporter.AddError($"Error at: {forCommand.BecomesExpression.Position} " +
                                   $"-> Expression needs to be an integer");
             }
             if (forCommand.ToExpression.Type != StandardEnvironment.IntegerType)
             {
                 // Error expression needs to be an integer
-                Reporter.AddError($"Error at: {forCommand.AssignExpression.Position} " +
+                Reporter.AddError($"Error at: {forCommand.ToExpression.Position} " +
                                   $"-> Expression needs to be an integer");
             }
         }

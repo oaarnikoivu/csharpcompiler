@@ -7,10 +7,25 @@ namespace Compiler.IO
 {
     public class ErrorReporter
     {
+
+        /// <summary>
+        /// The number of errors encountered so far
+        /// </summary>
+        public int ErrorCount { get; private set; } = 0;
+        
         /// <summary>
         /// Whether or not any errors have been encountered
         /// </summary>
-        public bool HasErrors { get; private set; }
+        public bool HasErrors
+        {
+            get { return ErrorCount > 0; }
+        }
+
+        public void ReportError(string message)
+        {
+            ErrorCount += 1;
+            Console.WriteLine($"ERROR: {message}");
+        }
 
         /// <summary>
         /// Set of errors 
@@ -23,7 +38,6 @@ namespace Compiler.IO
         /// <param name="error"></param>
         public void AddError(string error)
         {
-            HasErrors = true;
             Errors.Add(error);
         }
 

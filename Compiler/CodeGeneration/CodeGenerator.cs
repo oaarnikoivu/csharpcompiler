@@ -1,8 +1,6 @@
-using System.Diagnostics;
 using Compiler.IO;
 using Compiler.Nodes;
 using System.Reflection;
-using System.Runtime.InteropServices.ComTypes;
 using Compiler.Nodes.CommandNodes;
 using Compiler.Nodes.DeclarationNodes;
 using Compiler.Nodes.ExpressionNodes;
@@ -12,7 +10,6 @@ using Compiler.Nodes.TerminalNodes;
 using Compiler.Nodes.TypeDenoterNodes;
 using static Compiler.CodeGeneration.TriangleAbstractMachine;
 using static System.Reflection.BindingFlags;
-using Debugger = Compiler.IO.Debugger;
 
 namespace Compiler.CodeGeneration
 {
@@ -89,9 +86,7 @@ namespace Compiler.CodeGeneration
                     return (TargetCode)function.Invoke(this, new[] { node });
             }
         }
-
-
-
+        
         /// <summary>
         /// Generates code for a program node
         /// </summary>
@@ -102,9 +97,7 @@ namespace Compiler.CodeGeneration
             GenerateCodeFor(programNode.Command);
             code.AddInstruction(OpCode.HALT, 0, 0, 0);
         }
-
-
-
+        
         /// <summary>
         /// Generates code for an assign command node
         /// </summary>
@@ -136,8 +129,8 @@ namespace Compiler.CodeGeneration
         private void GenerateCodeForCallCommand(CallCommandNode callCommand)
         {
             Debugger.Write("Generating code for Call Command");
-            GenerateCodeFor(callCommand.Identifier);
             GenerateCodeFor(callCommand.Parameter);
+            GenerateCodeFor(callCommand.Identifier);
         }
         
         /// <summary>
@@ -209,11 +202,14 @@ namespace Compiler.CodeGeneration
         private void GenerateCodeForWhileCommand(WhileCommandNode whileCommand)
         {
             Debugger.Write("Generating code for While Command");
-            GenerateCodeFor(whileCommand.Expression);
-            Address whileJumpAddress = code.NextAddress;
-            code.AddInstruction(OpCode.JUMPIF, Register.CB, FalseValue, 0);
+            Address jumpAddress = code.NextAddress;
+            code.AddInstruction(OpCode.JUMP, Register.CB, 0, 0);
+            Address loopAddress = code.NextAddress;
             GenerateCodeFor(whileCommand.Command);
-            code.PatchInstructionToJumpHere(whileJumpAddress);
+            code.PatchInstructionToJumpHere(jumpAddress);
+            GenerateCodeFor(whileCommand.Expression);
+            code.AddInstruction(OpCode.JUMPIF, Register.CB, TrueValue, loopAddress);
+            return;
         }
 
         /// <summary>
@@ -223,9 +219,13 @@ namespace Compiler.CodeGeneration
         private void GenerateCodeForForCommand(ForCommandNode forCommand)
         {
             Debugger.Write("Generating code for For Command");
-            GenerateCodeFor(forCommand.AssignExpression);
-            GenerateCodeFor(forCommand.ToExpression);
+            scopes.AddScope();
+            Address loopAddress = code.NextAddress;
             GenerateCodeFor(forCommand.Command);
+           // GenerateCodeFor(forCommand.AssignExpression);
+            GenerateCodeFor(forCommand.ToExpression);
+            code.AddInstruction(OpCode.JUMP, Register.CB, TrueValue, loopAddress);
+            scopes.RemoveScope();
         }
         
         /// <summary>
@@ -305,9 +305,10 @@ namespace Compiler.CodeGeneration
         private void GenerateCodeForIdExpression(IdExpressionNode idExpression)
         {
             Debugger.Write("Generating code for ID Expression");
-            IEntityDeclarationNode entityDeclaration = (IEntityDeclarationNode) idExpression.Identifier.Declaration;
-            IRuntimeEntity item = entityDeclaration.RuntimeEntity;
-            code.AddInstruction(item.GenerateInstructionToLoad());
+            if (idExpression.Identifier.Declaration is IEntityDeclarationNode entityDeclaration)
+                code.AddInstruction(entityDeclaration.RuntimeEntity.GenerateInstructionToLoad());
+            else
+                Debugger.Write("The identifier is not a constant or variable and you should have picked this problem up during type checking");
         }
 
         /// <summary>

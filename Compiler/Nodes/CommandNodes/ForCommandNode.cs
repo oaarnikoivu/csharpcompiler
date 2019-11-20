@@ -1,4 +1,5 @@
 using System.Linq.Expressions;
+using Compiler.Nodes.DeclarationNodes;
 using Compiler.Nodes.Interfaces;
 using Compiler.Nodes.TerminalNodes;
 
@@ -7,14 +8,14 @@ namespace Compiler.Nodes.CommandNodes
     public class ForCommandNode : ICommandNode
     {
         /// <summary>
-        /// The identifier associated with the node
+        /// 
         /// </summary>
-        public IdentifierNode Identifier { get; }
+        public IDeclarationNode VarDeclaration { get; }
         
         /// <summary>
-        /// The assignment expression condition associated with the node
+        /// 
         /// </summary>
-        public IExpressionNode AssignExpression { get;  }
+        public IExpressionNode BecomesExpression { get; }
         
         /// <summary>
         /// The to expression condition associated with the node
@@ -34,16 +35,14 @@ namespace Compiler.Nodes.CommandNodes
         /// <summary>
         /// Creates a new for node
         /// </summary>
-        /// <param name="identifier"></param>
-        /// <param name="assignExpression"></param>
         /// <param name="toExpression"></param>
         /// <param name="command"></param>
         /// <param name="position"></param>
-        public ForCommandNode(IdentifierNode identifier, IExpressionNode assignExpression, IExpressionNode toExpression,
-            ICommandNode command, Position position)
+        public ForCommandNode(IDeclarationNode varDeclaration, IExpressionNode becomesExpression, 
+            IExpressionNode toExpression, ICommandNode command, Position position)
         {
-            Identifier = identifier;
-            AssignExpression = assignExpression;
+            VarDeclaration = varDeclaration;
+            BecomesExpression = becomesExpression;
             ToExpression = toExpression;
             Command = command;
             Position = position;

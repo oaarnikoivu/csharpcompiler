@@ -8,9 +8,16 @@ using static Compiler.CodeGeneration.TriangleAbstractMachine.Primitive;
 
 namespace Compiler.SemanticAnalysis
 {
+    /// <summary>
+    /// Items found in the standard environment
+    /// </summary>
     public static class StandardEnvironment
     {
 
+        /// <summary>
+        /// Everything in the standard environment that needs adding to the symbol table
+        /// </summary>
+        /// <returns></returns>
         public static ImmutableDictionary<string, IDeclarationNode> GetItems()
         {
             return new Dictionary<string, IDeclarationNode>()
@@ -32,8 +39,7 @@ namespace Compiler.SemanticAnalysis
                 {GreaterThan.Name, GreaterThan},
                 {Equal.Name, Equal},
                 {Not.Name, Not},
-
-
+                
                 {Chr.Name, Chr},
                 {Ord.Name, Ord},
                 {Eof.Name, Eof},
