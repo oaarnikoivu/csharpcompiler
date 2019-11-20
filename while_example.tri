@@ -3,7 +3,10 @@ let
 	var n: Integer
 in
 	begin
-		getint(var n);
-		while (n) do 
-			n := n + 1
+		n := 1;
+		while (n < 10) do
+			begin
+				putint(n); puteol();
+				n := n + 1
+			end 
 	end

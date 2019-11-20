@@ -168,20 +168,7 @@ namespace Compiler.CodeGeneration
             code.PatchInstructionToJumpHere(thenJumpAddress);
         }
 
-        /// <summary>
-        /// Generates code for a let command node
-        /// </summary>
-        /// <param name="letCommand">The node to generate code for</param>
-        private void GenerateCodeForLetCommand(LetCommandNode letCommand)
-        {
-            Debugger.Write("Generating code for Let Command");
-            scopes.AddScope();
-            GenerateCodeFor(letCommand.Declaration);
-            GenerateCodeFor(letCommand.Command);
-            code.AddInstruction(OpCode.POP, 0, 0, scopes.GetLocalScopeSize());
-            scopes.RemoveScope();
-        }
-
+      
         /// <summary>
         /// Generates code for a sequential command node
         /// </summary>
@@ -211,6 +198,21 @@ namespace Compiler.CodeGeneration
             code.AddInstruction(OpCode.JUMPIF, Register.CB, TrueValue, loopAddress);
             return;
         }
+        
+        /// <summary>
+        /// Generates code for a let command node
+        /// </summary>
+        /// <param name="letCommand">The node to generate code for</param>
+        private void GenerateCodeForLetCommand(LetCommandNode letCommand)
+        {
+            Debugger.Write("Generating code for Let Command");
+            scopes.AddScope();
+            GenerateCodeFor(letCommand.Declaration);
+            GenerateCodeFor(letCommand.Command);
+            code.AddInstruction(OpCode.POP, 0, 0, scopes.GetLocalScopeSize());
+            scopes.RemoveScope();
+        }
+
 
         /// <summary>
         /// Generates code for a for command node
@@ -220,12 +222,30 @@ namespace Compiler.CodeGeneration
         {
             Debugger.Write("Generating code for For Command");
             scopes.AddScope();
+            Address jumpAddress = code.NextAddress;
+            code.AddInstruction(OpCode.JUMP, Register.CB, 0, 0);
             Address loopAddress = code.NextAddress;
+            GenerateCodeForVarDeclaration(forCommand.VarDeclaration);
+            GenerateCodeForAssignCommand(forCommand.AssignCommand);
             GenerateCodeFor(forCommand.Command);
-           // GenerateCodeFor(forCommand.AssignExpression);
+            code.PatchInstructionToJumpHere(jumpAddress);
             GenerateCodeFor(forCommand.ToExpression);
-            code.AddInstruction(OpCode.JUMP, Register.CB, TrueValue, loopAddress);
+            code.AddInstruction(OpCode.JUMPIF, Register.CB, TrueValue, loopAddress);
             scopes.RemoveScope();
+        }
+        
+        /// <summary>
+        /// Generates code for a var declaration node
+        /// </summary>
+        /// <param name="varDeclaration">The node to generate code for</param>
+        private void GenerateCodeForVarDeclaration(VarDeclarationNode varDeclaration)
+        {
+            Debugger.Write("Generating code for Var Declaration");
+            byte variableSize = varDeclaration.EntityType.Size;
+            short currentScopeSize = scopes.GetLocalScopeSize();
+            code.AddInstruction(OpCode.PUSH, 0, 0, variableSize);
+            varDeclaration.RuntimeEntity = new RuntimeVariable(currentScopeSize, variableSize);
+            scopes.AddToLocalScope(variableSize);
         }
         
         /// <summary>
@@ -259,23 +279,7 @@ namespace Compiler.CodeGeneration
             foreach (IDeclarationNode declaration in sequentialDeclaration.Declarations)
                 GenerateCodeFor(declaration);
         }
-
-        /// <summary>
-        /// Generates code for a var declaration node
-        /// </summary>
-        /// <param name="varDeclaration">The node to generate code for</param>
-        private void GenerateCodeForVarDeclaration(VarDeclarationNode varDeclaration)
-        {
-            Debugger.Write("Generating code for Var Declaration");
-            byte variableSize = varDeclaration.EntityType.Size;
-            short currentScopeSize = scopes.GetLocalScopeSize();
-            code.AddInstruction(OpCode.PUSH, 0, 0, variableSize);
-            varDeclaration.RuntimeEntity = new RuntimeVariable(currentScopeSize, variableSize);
-            scopes.AddToLocalScope(variableSize);
-        }
-
-
-
+        
         /// <summary>
         /// Generates code for a binary expression node
         /// </summary>

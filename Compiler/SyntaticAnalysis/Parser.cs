@@ -268,10 +268,10 @@ namespace Compiler.SyntaticAnalysis
 
             // Declare I as a new variable of type integer with an undefined value
             IdentifierNode identifier = ParseIdentifier();
-            IDeclarationNode declaration = ParseForLoopVarDeclaration(identifier);
+            VarDeclarationNode declaration = ParseForLoopVarDeclaration(identifier);
             
             // Assign I to the value of E1
-            ICommandNode assignCommand = ParseForLoopAssignCommand(identifier);
+            AssignCommandNode assignCommand = ParseForLoopAssignCommand(identifier);
             
             // Evaluate E2 expression
             Accept(TokenType.To);
@@ -289,7 +289,7 @@ namespace Compiler.SyntaticAnalysis
         /// </summary>
         /// <param name="identifier"></param>
         /// <returns></returns>
-        private IDeclarationNode ParseForLoopVarDeclaration(IdentifierNode identifier)
+        private VarDeclarationNode ParseForLoopVarDeclaration(IdentifierNode identifier)
         {
             Debugger.Write("Parsing Var Declaration");
             Position startPosition = CurrentToken.Position;
@@ -304,7 +304,7 @@ namespace Compiler.SyntaticAnalysis
         /// </summary>
         /// <param name="identifier"></param>
         /// <returns></returns>
-        private ICommandNode ParseForLoopAssignCommand(IdentifierNode identifier)
+        private AssignCommandNode ParseForLoopAssignCommand(IdentifierNode identifier)
         {
             Debugger.Write("Parsing Assign Command");
             Accept(TokenType.Becomes);

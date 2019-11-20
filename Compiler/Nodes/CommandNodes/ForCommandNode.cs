@@ -10,12 +10,12 @@ namespace Compiler.Nodes.CommandNodes
         /// <summary>
         /// 
         /// </summary>
-        public IDeclarationNode VarDeclaration { get; }
+        public VarDeclarationNode VarDeclaration { get; }
         
         /// <summary>
         /// 
         /// </summary>
-        public ICommandNode AssignCommand { get; }
+        public AssignCommandNode AssignCommand { get; }
         
         /// <summary>
         /// The to expression condition associated with the node
@@ -41,7 +41,7 @@ namespace Compiler.Nodes.CommandNodes
         /// <param name="command"></param>
         /// <param name="position"></param>
         /// <param name="becomesExpression"></param>
-        public ForCommandNode(IDeclarationNode varDeclaration, ICommandNode assignCommand, IExpressionNode toExpression, ICommandNode command, Position position)
+        public ForCommandNode(VarDeclarationNode varDeclaration, AssignCommandNode assignCommand, IExpressionNode toExpression, ICommandNode command, Position position)
         {
             VarDeclaration = varDeclaration;
             AssignCommand = assignCommand;

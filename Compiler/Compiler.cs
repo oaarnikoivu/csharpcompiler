@@ -104,7 +104,7 @@ namespace Compiler
             WriteLine("Done");
 
             // Code generation
-            /*Write("Generating code...");
+            Write("Generating code...");
             TargetCode targetCode = Generator.GenerateCodeFor(tree);
             if (Reporter.HasErrors) return;
             WriteLine("Done");
@@ -113,7 +113,7 @@ namespace Compiler
             Write("Writing to file...");
             Writer.WriteToFiles(targetCode);
             if (Reporter.HasErrors) return;
-            WriteLine("Done");*/
+            WriteLine("Done");
             
             WriteLine(TreePrinter.ToString(tree));
         }
