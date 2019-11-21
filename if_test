@@ -1,0 +1,13 @@
+begin
+	const MAX ~ 10;
+	var n: Integer
+in
+	begin
+		n := 9;
+		if (n < MAX) then
+			begin
+				putint(n); puteol();
+			end
+		endif
+	end )
+

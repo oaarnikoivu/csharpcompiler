@@ -1,0 +1,23 @@
+# Testing if else statements
+let
+	const MAX_NUM ~ 10;
+	var n: Integer
+in
+	begin
+		n := 15;
+		if (n < MAX_NUM) then
+			begin
+				n := 1;
+				putint(n);
+			end
+		else 
+			if (n > MAX_NUM) then
+				begin
+					n := 2;
+					putint(n);
+				end
+			endif
+		endif
+	end
+			
+		

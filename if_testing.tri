@@ -1,0 +1,25 @@
+# This is a comment
+let 
+	const MAX_VAL ~ 10;
+	var a: Integer;
+	var b: Integer;
+	var n: Integer
+in
+	begin
+		a := 2;
+		b := 12;
+		
+		if (a < 10) then
+			if (b > 10) then
+				begin
+					n := 1;
+					putint(n);
+				end 
+			endif
+		else 
+			begin
+				n := 0;
+				putint(n);
+			end
+		endif			
+	end

@@ -77,16 +77,22 @@ namespace Compiler.Tokenization
             return token;
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="tokenType"></param>
+        /// <param name="tokenStartPosition"></param>
+        /// <param name="token"></param>
         private void HandleTokenErrors(TokenType tokenType, Position tokenStartPosition, Token token)
         {
             switch (tokenType)
             {
                 case TokenType.UnknownInputError:
-                    Reporter.ReportError($"Unknown input character: {token.Spelling} " +
-                                         $"at position: {tokenStartPosition}");
+                    Reporter.ReportError($"{tokenStartPosition} -> Unknown input character {token.Spelling}");
                     break;
                 case TokenType.UnacceptableSeqError:
-                    Reporter.ReportError($"Unacceptable sequences of input characters at: {tokenStartPosition}");
+                    Reporter.ReportError($"{tokenStartPosition} -> Unacceptable sequence(s) " +
+                                         $"of input characters");
                     break;
             }
         }

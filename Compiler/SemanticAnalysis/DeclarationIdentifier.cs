@@ -126,7 +126,7 @@ namespace Compiler.SemanticAnalysis
         }
         
         /// <summary>
-        /// Carries out identification on an if command node
+        /// Carries out identification on an if else command node
         /// </summary>
         /// <param name="ifElseCommand">The node to perform identification on</param>
         private void PerformIdentificationOnIfElseCommand(IfElseCommandNode ifElseCommand)
@@ -175,15 +175,14 @@ namespace Compiler.SemanticAnalysis
         private void PerformIdentificationOnForCommand(ForCommandNode forCommand)
         {
             SymbolTable.OpenScope();
-            PerformIdentification(forCommand.VarDeclaration);
-            PerformIdentification(forCommand.AssignCommand);
+            PerformIdentificationOnVarDeclaration(forCommand.VarDeclaration);
+            PerformIdentificationOnAssignCommand(forCommand.AssignCommand);
             PerformIdentification(forCommand.ToExpression);
             PerformIdentification(forCommand.Command);
             SymbolTable.CloseScope();
         }
 
-
-
+        
         /// <summary>
         /// Carries out identification on a const declaration node
         /// </summary>
@@ -217,6 +216,7 @@ namespace Compiler.SemanticAnalysis
             bool success = SymbolTable.Enter(token.Spelling, varDeclaration);
             if (!success) Reporter.ReportError($"{token.Position} -> Var declaration with {token.Spelling} " +
                                  $"already exists in the current scope");
+            
             PerformIdentification(varDeclaration.TypeDenoter);
         }
 
@@ -338,7 +338,7 @@ namespace Compiler.SemanticAnalysis
         {
             IDeclarationNode declaration = SymbolTable.Retrieve(identifier.IdentifierToken.Spelling);
             identifier.Declaration = declaration;
-            if (declaration == null) Reporter.ReportError($"{identifier.Position} -> Null declaration");
+            if (declaration == null) Reporter.ReportError($"{identifier.Position} -> Variable not declared");
         }
 
         /// <summary>

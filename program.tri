@@ -1,0 +1,13 @@
+# This is my example program
+let
+	const MAX_VAL ~ 11;
+	var n: Integer 
+in
+	begin
+		n := 1;	
+		while (n < MAX_VAL) do 
+			begin
+				putint(n); puteol();
+				n := n + 1;
+			end
+	end 

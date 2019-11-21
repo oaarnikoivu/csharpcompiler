@@ -1,6 +1,7 @@
 using Compiler.IO;
 using Compiler.Nodes;
 using System.Reflection;
+using System.Transactions;
 using Compiler.Nodes.CommandNodes;
 using Compiler.Nodes.DeclarationNodes;
 using Compiler.Nodes.ExpressionNodes;
@@ -144,16 +145,13 @@ namespace Compiler.CodeGeneration
             Address ifJumpAddress = code.NextAddress;
             code.AddInstruction(OpCode.JUMPIF, Register.CB, FalseValue, 0);
             GenerateCodeFor(ifCommand.ThenCommand);
-            Address thenJumpAddress = code.NextAddress;
-            code.AddInstruction(OpCode.JUMP, Register.CB, 0, 0);
             code.PatchInstructionToJumpHere(ifJumpAddress);
-            code.PatchInstructionToJumpHere(thenJumpAddress);
         }
         
         /// <summary>
         /// Generates code for an if else command node
         /// </summary>
-        /// <param name="ifCommand">The node to generate code for</param>
+        /// <param name="ifElseCommand">The node to generate code for</param>
         private void GenerateCodeForIfElseCommand(IfElseCommandNode ifElseCommand)
         {
             Debugger.Write("Generating code for If Else Command");
@@ -196,7 +194,27 @@ namespace Compiler.CodeGeneration
             code.PatchInstructionToJumpHere(jumpAddress);
             GenerateCodeFor(whileCommand.Expression);
             code.AddInstruction(OpCode.JUMPIF, Register.CB, TrueValue, loopAddress);
-            return;
+        }
+        
+        /// <summary>
+        /// Generates code for a for command node
+        /// </summary>
+        /// <param name="forCommand"></param>
+        private void GenerateCodeForForCommand(ForCommandNode forCommand)
+        {
+            Debugger.Write("Generating code for For Command");
+            scopes.AddScope();
+            GenerateCodeForVarDeclaration(forCommand.VarDeclaration);
+            
+            Address jumpAddress = code.NextAddress;
+            code.AddInstruction(OpCode.JUMP, Register.CB, 0, 0);
+            Address loopAddress = code.NextAddress;
+            GenerateCodeFor(forCommand.Command);
+            code.AddInstruction(OpCode.CALL, Register.PB, 4, (short) Primitive.SUCC);
+            
+            code.PatchInstructionToJumpHere(jumpAddress);
+            code.AddInstruction(OpCode.JUMPIF, Register.CB, TrueValue, loopAddress);
+            scopes.RemoveScope();
         }
         
         /// <summary>
@@ -212,27 +230,7 @@ namespace Compiler.CodeGeneration
             code.AddInstruction(OpCode.POP, 0, 0, scopes.GetLocalScopeSize());
             scopes.RemoveScope();
         }
-
-
-        /// <summary>
-        /// Generates code for a for command node
-        /// </summary>
-        /// <param name="forCommand"></param>
-        private void GenerateCodeForForCommand(ForCommandNode forCommand)
-        {
-            Debugger.Write("Generating code for For Command");
-            scopes.AddScope();
-            Address jumpAddress = code.NextAddress;
-            code.AddInstruction(OpCode.JUMP, Register.CB, 0, 0);
-            Address loopAddress = code.NextAddress;
-            GenerateCodeForVarDeclaration(forCommand.VarDeclaration);
-            GenerateCodeForAssignCommand(forCommand.AssignCommand);
-            GenerateCodeFor(forCommand.Command);
-            code.PatchInstructionToJumpHere(jumpAddress);
-            GenerateCodeFor(forCommand.ToExpression);
-            code.AddInstruction(OpCode.JUMPIF, Register.CB, TrueValue, loopAddress);
-            scopes.RemoveScope();
-        }
+        
         
         /// <summary>
         /// Generates code for a var declaration node
@@ -379,8 +377,7 @@ namespace Compiler.CodeGeneration
                 Debugger.Write("Error: The identifier is not a variable and you should have picked this problem up during type checking");
         }
 
-
-
+        
         /// <summary>
         /// Generates code for a type denoter node
         /// </summary>

@@ -1,19 +1,17 @@
-using System.Linq.Expressions;
 using Compiler.Nodes.DeclarationNodes;
 using Compiler.Nodes.Interfaces;
-using Compiler.Nodes.TerminalNodes;
 
 namespace Compiler.Nodes.CommandNodes
 {
     public class ForCommandNode : ICommandNode
     {
         /// <summary>
-        /// 
+        /// The variable declaration associated with the node
         /// </summary>
         public VarDeclarationNode VarDeclaration { get; }
         
         /// <summary>
-        /// 
+        /// The assignment command associated with the node
         /// </summary>
         public AssignCommandNode AssignCommand { get; }
         
@@ -36,11 +34,11 @@ namespace Compiler.Nodes.CommandNodes
         /// <summary>
         /// Creates a new for node
         /// </summary>
+        /// <param name="varDeclaration"></param>
         /// <param name="assignCommand"></param>
         /// <param name="toExpression"></param>
         /// <param name="command"></param>
         /// <param name="position"></param>
-        /// <param name="becomesExpression"></param>
         public ForCommandNode(VarDeclarationNode varDeclaration, AssignCommandNode assignCommand, IExpressionNode toExpression, ICommandNode command, Position position)
         {
             VarDeclaration = varDeclaration;

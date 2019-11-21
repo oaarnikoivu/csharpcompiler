@@ -265,15 +265,23 @@ namespace Compiler.SyntaticAnalysis
             Debugger.Write("Parsing For Command");
             Position startPosition = CurrentToken.Position;
             Accept(TokenType.For);
-
-            // Declare I as a new variable of type integer with an undefined value
+            
             IdentifierNode identifier = ParseIdentifier();
-            VarDeclarationNode declaration = ParseForLoopVarDeclaration(identifier);
+            
+            // Declare I as a new variable of type integer with an undefined value
+            VarDeclarationNode declaration = new VarDeclarationNode(identifier, 
+                new TypeDenoterNode(
+                    new IdentifierNode(
+                        new Token(TokenType.Identifier, "Integer", startPosition))), startPosition);
+            
+            // Evaluate E1
+            Accept(TokenType.Becomes);
+            IExpressionNode becomesExpression = ParseExpression();
             
             // Assign I to the value of E1
-            AssignCommandNode assignCommand = ParseForLoopAssignCommand(identifier);
+            AssignCommandNode assign = new AssignCommandNode(identifier, becomesExpression);
             
-            // Evaluate E2 expression
+            // Evaluate E2 
             Accept(TokenType.To);
             IExpressionNode toExpression = ParseExpression();
             Accept(TokenType.Do);
@@ -281,37 +289,10 @@ namespace Compiler.SyntaticAnalysis
             // Execute command
             ICommandNode command = ParseSingleCommand();
             Accept(TokenType.Next);
-            return new ForCommandNode(declaration, assignCommand, toExpression, command, startPosition);
+            
+            return new ForCommandNode(declaration, assign, toExpression, command, startPosition);
         }
         
-        /// <summary>
-        /// Parses a for loops variable declaration
-        /// </summary>
-        /// <param name="identifier"></param>
-        /// <returns></returns>
-        private VarDeclarationNode ParseForLoopVarDeclaration(IdentifierNode identifier)
-        {
-            Debugger.Write("Parsing Var Declaration");
-            Position startPosition = CurrentToken.Position;
-            return new VarDeclarationNode(identifier, 
-                new TypeDenoterNode(
-                    new IdentifierNode(
-                        new Token(TokenType.Identifier, "Integer", startPosition))), startPosition);
-        }
-        
-        /// <summary>
-        /// Parses the assignment command for a for loop
-        /// </summary>
-        /// <param name="identifier"></param>
-        /// <returns></returns>
-        private AssignCommandNode ParseForLoopAssignCommand(IdentifierNode identifier)
-        {
-            Debugger.Write("Parsing Assign Command");
-            Accept(TokenType.Becomes);
-            IExpressionNode expression = ParseExpression();
-            return new AssignCommandNode(identifier, expression);
-        }
-
         /// <summary>
         /// Parses a declaration
         /// </summary>
@@ -372,31 +353,14 @@ namespace Compiler.SyntaticAnalysis
         {
             Debugger.Write("Parsing Var Declaration");
             Position startPosition = CurrentToken.Position;
-            if (CurrentToken.Type == TokenType.Var)
-            {
-                Accept(TokenType.Var);
-                IdentifierNode identifier = ParseIdentifier();
-                Accept(TokenType.Colon);
-                TypeDenoterNode typeDenoter = ParseTypeDenoter();
-                return new VarDeclarationNode(identifier, typeDenoter, startPosition);
-            }
-            /*else if (CurrentToken.Type == TokenType.For) // Declare I as a new variable of type integer with undefined value
-            {
-                Accept(TokenType.For);
-                IdentifierNode identifier = ParseIdentifier();
-                return new VarDeclarationNode(identifier, 
-                    new TypeDenoterNode(
-                        new IdentifierNode(
-                            new Token(TokenType.Identifier, "Integer", startPosition))), startPosition);
-            }*/
-            else
-            {
-                return new ErrorNode(startPosition);
-            }
+            Accept(TokenType.Var); 
+            IdentifierNode identifier = ParseIdentifier(); 
+            Accept(TokenType.Colon); 
+            TypeDenoterNode typeDenoter = ParseTypeDenoter(); 
+            return new VarDeclarationNode(identifier, typeDenoter, startPosition);
         }
 
-       
-
+        
         /// <summary>
         /// Parses a type denoter
         /// </summary>
@@ -415,12 +379,18 @@ namespace Compiler.SyntaticAnalysis
             Debugger.Write("Parsing Parameter");
             switch (CurrentToken.Type)
             {
-                case TokenType.RightBracket:
-                    return new BlankParameterNode(CurrentToken.Position);
+                case TokenType.Identifier:
+                case TokenType.IntLiteral:
+                case TokenType.CharLiteral: 
+                case TokenType.Operator: 
+                case TokenType.LeftBracket:
+                    return ParseValParameter();
                 case TokenType.Var:
                     return ParseVarParameter();
+                case TokenType.RightBracket:
+                    return new BlankParameterNode(CurrentToken.Position);
                 default:
-                    return ParseValParameter();
+                    return new ErrorNode(CurrentToken.Position);
             }
         }
 
@@ -518,7 +488,11 @@ namespace Compiler.SyntaticAnalysis
             if (CurrentToken.Type == TokenType.LeftBracket)
             {
                 // Parse call expression
-                return ParseCallExpression(identifier);
+                Debugger.Write("Parsing Call Expression");
+                Accept(TokenType.LeftBracket);
+                IParameterNode parameter = ParseParameter();
+                Accept(TokenType.RightBracket);
+                return new CallExpressionNode(identifier, parameter);
 
             }
             else
@@ -526,20 +500,6 @@ namespace Compiler.SyntaticAnalysis
                 Debugger.Write("Parsing Identifier Expression");
                 return new IdExpressionNode(identifier);
             }
-        }
-
-        /// <summary>
-        /// Parses a call expression
-        /// </summary>
-        /// <param name="identifier"></param>
-        /// <returns></returns>
-        private IExpressionNode ParseCallExpression(IdentifierNode identifier)
-        {
-            Debugger.Write("Parsing Call Expression");
-            Accept(TokenType.LeftBracket);
-            IParameterNode parameter = ParseParameter();
-            Accept(TokenType.RightBracket);
-            return new CallExpressionNode(identifier, parameter);
         }
         
         /// <summary>

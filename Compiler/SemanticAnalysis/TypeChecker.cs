@@ -119,6 +119,7 @@ namespace Compiler.SemanticAnalysis
         {
             PerformTypeChecking(callCommand.Identifier);
             PerformTypeChecking(callCommand.Parameter);
+            
             if (!(callCommand.Identifier.Declaration is FunctionDeclarationNode functionDeclaration))
             {
                 // Error: Identifier is not a function
@@ -193,8 +194,10 @@ namespace Compiler.SemanticAnalysis
         {
             PerformTypeChecking(ifCommand.Expression);
             PerformTypeChecking(ifCommand.ThenCommand);
+            
             if (ifCommand.Expression.Type != StandardEnvironment.BooleanType)
             {
+                // Error: Expression should be boolean
                 Reporter.ReportError($"{ifCommand.Expression.Position} -> " +
                                      $"Expression should be boolean");
             }
@@ -209,6 +212,7 @@ namespace Compiler.SemanticAnalysis
             PerformTypeChecking(ifElseCommand.Expression);
             PerformTypeChecking(ifElseCommand.ThenCommand);
             PerformTypeChecking(ifElseCommand.ElseCommand);
+            
             if (ifElseCommand.Expression.Type != StandardEnvironment.BooleanType)
             {
                 Reporter.ReportError($"{ifElseCommand.Expression.Position} -> " +
@@ -255,24 +259,25 @@ namespace Compiler.SemanticAnalysis
 
         private void PerformTypeCheckingOnForCommand(ForCommandNode forCommand)
         {
-            PerformTypeChecking(forCommand.VarDeclaration);
-            PerformTypeChecking(forCommand.AssignCommand);
+            PerformTypeCheckingOnVarDeclaration(forCommand.VarDeclaration);
+            PerformTypeCheckingOnAssignCommand(forCommand.AssignCommand);
             PerformTypeChecking(forCommand.ToExpression);
             PerformTypeChecking(forCommand.Command);
             
-           /* if (forCommand.BecomesExpression.Type != StandardEnvironment.IntegerType)
+            
+           if (forCommand.AssignCommand.Expression.Type != StandardEnvironment.IntegerType)
             {
-                // Error expression needs to be an integer
-                Reporter.ReportError($"{forCommand.BecomesExpression.Position} -> " +
-                                     $"Cannot assign for command {forCommand.VarDeclaration} to {forCommand.BecomesExpression.Type}, " +
+                // Error: expression needs to be an integer
+                Reporter.ReportError($"{forCommand.AssignCommand.Expression.Position} -> " +
+                                     $"Cannot assign for command {forCommand.VarDeclaration} to {forCommand.AssignCommand.Expression.Type}, " +
                                      $"should be an integer");
             }
             if (forCommand.ToExpression.Type != StandardEnvironment.IntegerType)
             {
-                // Error expression needs to be an integer
+                // Error: expression needs to be an integer
                 Reporter.ReportError($"{forCommand.ToExpression.Position} -> " +
                                      $"Cannot execute for command on {forCommand.ToExpression.Type}, should be an integer");
-            }*/
+            }
         }
 
 

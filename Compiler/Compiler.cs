@@ -113,7 +113,7 @@ namespace Compiler
             Write("Writing to file...");
             Writer.WriteToFiles(targetCode);
             if (Reporter.HasErrors) return;
-            WriteLine("Done");
+            WriteLine("Done"); 
             
             WriteLine(TreePrinter.ToString(tree));
         }
