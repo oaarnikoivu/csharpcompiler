@@ -2,8 +2,8 @@
   "profiles": {
     "Compiler": {
       "commandName": "Project",
-      "commandLineArgs": "language.tri",
-      "workingDirectory": "../"
+      "commandLineArgs": "",
+      "workingDirectory": "../test_files"
     }
   }
 }
