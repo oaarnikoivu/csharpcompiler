@@ -1,7 +1,0 @@
-# Testing
-let
-	var my_num: Integer
-in
-begin
-	my_num := 7
-end

@@ -1,0 +1,9 @@
+# Testing the scanner functionality 
+
+hello_123 # Testing the identifier
+ 
+01 02 3 4 5 10 25 200 # Making sure that <integeral-literal> works as intended 
+
+'h' 'e' 'l' 'l' 'o' '.' '?' '1' '1' ' '  # Testing char literals  
+
++ - / ! * < > = # Testing operators 

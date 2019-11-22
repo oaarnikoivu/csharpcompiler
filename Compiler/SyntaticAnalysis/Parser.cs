@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using Compiler.CodeGeneration;
 using Compiler.IO;
 using Compiler.Tokenization;
 using Compiler.Nodes;
@@ -71,8 +69,8 @@ namespace Compiler.SyntaticAnalysis
             }
             else
             {
-                Reporter.ReportError($"Incorrect use of token type: {CurrentToken.Type} " +
-                                     $"at position: {CurrentToken.Position}");
+                Reporter.ReportError($"{CurrentToken.Position} -> " +
+                                     $"Incorrect use of token type {CurrentToken.Type}");
             }
         }
         
@@ -142,6 +140,10 @@ namespace Compiler.SyntaticAnalysis
                     return ParseSkipCommand();
             }
         }
+        
+        /**
+         * C O M M A N D S
+         */
 
         /// <summary>
         /// Parses a skip command
@@ -184,17 +186,6 @@ namespace Compiler.SyntaticAnalysis
             }
         }
         
-        /// <summary>
-        /// Parses an identifier
-        /// </summary>
-        private IdentifierNode ParseIdentifier()
-        {
-            Debugger.Write("Parsing Identifier");
-            Token identifierToken = CurrentToken;
-            Accept(TokenType.Identifier);
-            return new IdentifierNode(identifierToken);
-        }
-
         /// <summary>
         /// Parses an if command
         /// </summary>
@@ -293,6 +284,10 @@ namespace Compiler.SyntaticAnalysis
             return new ForCommandNode(declaration, assign, toExpression, command, startPosition);
         }
         
+        /**
+         * D E C L A R A T I O N S
+         */
+        
         /// <summary>
         /// Parses a declaration
         /// </summary>
@@ -326,7 +321,7 @@ namespace Compiler.SyntaticAnalysis
                 case TokenType.Var:
                     return ParseVarDeclaration();
                 default:
-                    Reporter.ReportError($"Could not parse single declaration at: {CurrentToken.Position}");
+                    Reporter.ReportError($"{CurrentToken.Position} -> Could not parse single declaration");
                     return new ErrorNode(CurrentToken.Position);
                     
             }
@@ -370,6 +365,10 @@ namespace Compiler.SyntaticAnalysis
             IdentifierNode identifier = ParseIdentifier();
             return new TypeDenoterNode(identifier);
         }
+        
+        /**
+         * P A R A M E T E R S
+         */
 
         /// <summary>
         /// Parses a parameter
@@ -405,6 +404,10 @@ namespace Compiler.SyntaticAnalysis
             IdentifierNode identifier = ParseIdentifier();
             return new VarParameterNode(identifier, startPosition);
         }
+        
+        /**
+         * E X P R E S S I O N S
+         */
 
         /// <summary>
         /// Parses a value parameter
@@ -452,7 +455,7 @@ namespace Compiler.SyntaticAnalysis
                 case TokenType.LeftBracket:
                     return ParseBracketExpression();
                 default:
-                    Reporter.ReportError($"Could not parse primary expression at: {CurrentToken.Position}");
+                    Reporter.ReportError($"{CurrentToken.Position} -> Could not parse primary expression");
                     return new ErrorNode(CurrentToken.Position);
             }
         }
@@ -524,7 +527,11 @@ namespace Compiler.SyntaticAnalysis
             Accept(TokenType.RightBracket);
             return expression;
         }
-
+        
+        /**
+         * L I T E R A L S
+         */
+        
         /// <summary>
         /// Parses an integer literal
         /// </summary>
@@ -546,6 +553,25 @@ namespace Compiler.SyntaticAnalysis
             Accept(TokenType.CharLiteral);
             return new CharacterLiteralNode(characterLiteralToken);
         }
+        
+        /*
+         * I D E N T I F I E R S
+         */
+        
+        /// <summary>
+        /// Parses an identifier
+        /// </summary>
+        private IdentifierNode ParseIdentifier()
+        {
+            Debugger.Write("Parsing Identifier");
+            Token identifierToken = CurrentToken;
+            Accept(TokenType.Identifier);
+            return new IdentifierNode(identifierToken);
+        }
+        
+        /*
+         * O P E R A T O R S 
+         */
 
         /// <summary>
         /// Parses an operator

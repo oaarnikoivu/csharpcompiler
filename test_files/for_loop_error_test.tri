@@ -1,0 +1,6 @@
+# Testing for loop errors
+for i := 'c' to 10 do
+	begin
+		putint(n); puteol();
+	end
+next

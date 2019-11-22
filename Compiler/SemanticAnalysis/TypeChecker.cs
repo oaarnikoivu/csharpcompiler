@@ -77,6 +77,9 @@ namespace Compiler.SemanticAnalysis
         }
 
 
+        /**
+         * C O M M A N D S
+         */
 
         /// <summary>
         /// Carries out type checking on an assign command node
@@ -257,6 +260,10 @@ namespace Compiler.SemanticAnalysis
             }
         }
 
+        /// <summary>
+        /// Carries out type checking on a for command node
+        /// </summary>
+        /// <param name="forCommand">The node to perform type checking on</param>
         private void PerformTypeCheckingOnForCommand(ForCommandNode forCommand)
         {
             PerformTypeCheckingOnVarDeclaration(forCommand.VarDeclaration);
@@ -269,18 +276,24 @@ namespace Compiler.SemanticAnalysis
             {
                 // Error: expression needs to be an integer
                 Reporter.ReportError($"{forCommand.AssignCommand.Expression.Position} -> " +
-                                     $"Cannot assign for command {forCommand.VarDeclaration} to {forCommand.AssignCommand.Expression.Type}, " +
+                                     $"Cannot assign for command {forCommand.VarDeclaration} " +
+                                     $"to {forCommand.AssignCommand.Expression.Type}, " +
                                      $"should be an integer");
             }
             if (forCommand.ToExpression.Type != StandardEnvironment.IntegerType)
             {
                 // Error: expression needs to be an integer
                 Reporter.ReportError($"{forCommand.ToExpression.Position} -> " +
-                                     $"Cannot execute for command on {forCommand.ToExpression.Type}, should be an integer");
+                                     $"Cannot execute for command on {forCommand.ToExpression.Type}, " +
+                                     $"should be an integer");
             }
         }
-
-
+        
+        /**
+         * D E C L A R A T I O N S
+         */
+        
+        
         /// <summary>
         /// Carries out type checking on a const declaration node
         /// </summary>
@@ -310,9 +323,11 @@ namespace Compiler.SemanticAnalysis
             PerformTypeChecking(varDeclaration.TypeDenoter);
             PerformTypeChecking(varDeclaration.Identifier);
         }
-
-
-
+        
+        /**
+         * E X P R E S S I O N S
+         */
+        
         /// <summary>
         /// Carries out type checking on a binary expression node
         /// </summary>
@@ -434,6 +449,9 @@ namespace Compiler.SemanticAnalysis
         }
 
 
+        /**
+         * P A R A M E T E R S
+         */
 
         /// <summary>
         /// Carries out type checking on a blank parameter
@@ -490,6 +508,9 @@ namespace Compiler.SemanticAnalysis
         }
 
 
+        /**
+         * L I T E R A L S
+         */
 
         /// <summary>
         /// Carries out type checking on a character literal node
@@ -503,15 +524,7 @@ namespace Compiler.SemanticAnalysis
                 Reporter.ReportError($"{characterLiteral.Value} at {characterLiteral.Position} is too big");
             }
         }
-
-        /// <summary>
-        /// Carries out type checking on an identifier node
-        /// </summary>
-        /// <param name="identifier">The node to perform type checking on</param>
-        private void PerformTypeCheckingOnIdentifier(IdentifierNode identifier)
-        {
-        }
-
+        
         /// <summary>
         /// Carries out type checking on an integer literal node
         /// </summary>
@@ -523,6 +536,18 @@ namespace Compiler.SemanticAnalysis
                 // Error - value too big
                 Reporter.ReportError($"{integerLiteral.Value} at {integerLiteral.Position} is too big");
             }
+        }
+        
+        /**
+         * I D E N T I F I E R 
+         */
+        
+        /// <summary>
+        /// Carries out type checking on an identifier node
+        /// </summary>
+        /// <param name="identifier">The node to perform type checking on</param>
+        private void PerformTypeCheckingOnIdentifier(IdentifierNode identifier)
+        {
         }
 
         /// <summary>

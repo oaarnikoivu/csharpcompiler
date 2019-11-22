@@ -1,7 +1,6 @@
 using Compiler.IO;
 using Compiler.Nodes;
 using System.Reflection;
-using System.Transactions;
 using Compiler.Nodes.CommandNodes;
 using Compiler.Nodes.DeclarationNodes;
 using Compiler.Nodes.ExpressionNodes;
@@ -202,18 +201,20 @@ namespace Compiler.CodeGeneration
         /// <param name="forCommand"></param>
         private void GenerateCodeForForCommand(ForCommandNode forCommand)
         {
-            Debugger.Write("Generating code for For Command");
-            scopes.AddScope();
-            GenerateCodeForVarDeclaration(forCommand.VarDeclaration);
             
+            Debugger.Write("Generating code for For Command");
+            scopes.AddScope(); 
+            GenerateCodeForVarDeclaration(forCommand.VarDeclaration);
+            GenerateCodeFor(forCommand.AssignCommand.Expression);
+            // GenerateCodeForAssignCommand(forCommand.AssignCommand);
             Address jumpAddress = code.NextAddress;
             code.AddInstruction(OpCode.JUMP, Register.CB, 0, 0);
             Address loopAddress = code.NextAddress;
             GenerateCodeFor(forCommand.Command);
-            code.AddInstruction(OpCode.CALL, Register.PB, 4, (short) Primitive.SUCC);
-            
             code.PatchInstructionToJumpHere(jumpAddress);
+            GenerateCodeFor(forCommand.ToExpression);
             code.AddInstruction(OpCode.JUMPIF, Register.CB, TrueValue, loopAddress);
+            code.AddInstruction(OpCode.POP, 0, 0, 1);
             scopes.RemoveScope();
         }
         

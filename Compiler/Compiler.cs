@@ -115,7 +115,7 @@ namespace Compiler
             if (Reporter.HasErrors) return;
             WriteLine("Done"); 
             
-            WriteLine(TreePrinter.ToString(tree));
+            WriteLine(TreePrinter.ToString(tree)); 
         }
 
         /// <summary>
@@ -126,6 +126,7 @@ namespace Compiler
             if (Reporter.HasErrors)
             {
                 WriteLine("\nFailed to compile"!);
+                // WriteLine("Number of errors: " + Reporter.ErrorCount);
                 Reporter.Errors.ForEach(error =>
                 {
                     WriteLine(error);

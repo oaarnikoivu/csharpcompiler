@@ -1,0 +1,18 @@
+# Testing type checking
+let
+	var n: Integer;
+	var c: Char;
+	var flag: Boolean
+in
+	begin
+		n := 'c';
+		n := c; 
+		n := flag;
+		n := 7; 
+
+		for i := 'c' to 10 do
+			begin
+				putint(i);
+			end 
+		next 
+	end 

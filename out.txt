@@ -1,8 +1,0 @@
-   0: PUSH   1             (9 0 0 1)
-   1: JUMP   CB+6          (11 0 0 6)
-   2: LOAD   1 SB+0        (0 4 1 0)
-   3: CALL   PUTINT        (6 2 0 25)
-   4: CALL   PUTEOL        (6 2 0 23)
-   5: CALL   SUCC          (6 2 4 4)
-   6: JUMPIF TRUE CB+2     (13 0 1 2)
-   7: HALT                 (14 0 0 0)

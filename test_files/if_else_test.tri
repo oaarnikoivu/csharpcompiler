@@ -1,6 +1,5 @@
 # This is a comment
-let 
-	const MAX_VAL ~ 10;
+let
 	var a: Integer;
 	var b: Integer;
 	var n: Integer

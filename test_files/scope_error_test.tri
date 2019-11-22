@@ -1,0 +1,5 @@
+# This program should produce errors for problems with variable scope and duplicate variables 
+let 
+	var n: Integer;
+	var n: Integer 
+in 

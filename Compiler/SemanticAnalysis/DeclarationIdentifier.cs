@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Reflection;
-using Compiler.CodeGeneration;
 using Compiler.IO;
 using Compiler.Nodes;
 using Compiler.Nodes.CommandNodes;
@@ -8,7 +7,6 @@ using Compiler.Nodes.DeclarationNodes;
 using Compiler.Nodes.ExpressionNodes;
 using Compiler.Nodes.Interfaces;
 using Compiler.Nodes.ParameterNodes;
-using Compiler.Nodes.StandardEnvironmentNodes;
 using Compiler.Nodes.TerminalNodes;
 using Compiler.Nodes.TypeDenoterNodes;
 using Compiler.Tokenization;
@@ -86,6 +84,10 @@ namespace Compiler.SemanticAnalysis
         {
             PerformIdentification(programNode.Command);
         }
+        
+        /**
+         * C O M M A N D S
+         */
         
         /// <summary>
         /// Carries out identification on an assign command node
@@ -181,21 +183,12 @@ namespace Compiler.SemanticAnalysis
             PerformIdentification(forCommand.Command);
             SymbolTable.CloseScope();
         }
-
         
-        /// <summary>
-        /// Carries out identification on a const declaration node
-        /// </summary>
-        /// <param name="constDeclaration">The node to perform identification on</param>
-        private void PerformIdentificationOnConstDeclaration(ConstDeclarationNode constDeclaration)
-        {
-            Token token = constDeclaration.Identifier.IdentifierToken;
-            bool success = SymbolTable.Enter(token.Spelling, constDeclaration);
-            if (!success) Reporter.ReportError($"{token.Position} -> Const declaration with {token.Spelling} " +
-                                 $"already exists in the current scope");
-            PerformIdentification(constDeclaration.Expression);
-        }
-
+        /**
+         * D E C L A R A T I O N S
+         */
+        
+        
         /// <summary>
         /// Carries out identification on a sequential declaration node
         /// </summary>
@@ -219,9 +212,24 @@ namespace Compiler.SemanticAnalysis
             
             PerformIdentification(varDeclaration.TypeDenoter);
         }
-
-
-
+        
+        /// <summary>
+        /// Carries out identification on a const declaration node
+        /// </summary>
+        /// <param name="constDeclaration">The node to perform identification on</param>
+        private void PerformIdentificationOnConstDeclaration(ConstDeclarationNode constDeclaration)
+        {
+            Token token = constDeclaration.Identifier.IdentifierToken;
+            bool success = SymbolTable.Enter(token.Spelling, constDeclaration);
+            if (!success) Reporter.ReportError($"{token.Position} -> Const declaration with {token.Spelling} " +
+                                               $"already exists in the current scope");
+            PerformIdentification(constDeclaration.Expression);
+        }
+        
+        /**
+         * E X P R E S S I O N S 
+         */
+        
         /// <summary>
         /// Carries out identification on a binary expression node
         /// </summary>
@@ -281,8 +289,12 @@ namespace Compiler.SemanticAnalysis
             PerformIdentification(callExpression.Parameter);
         }
 
-
-
+        
+        /**
+         * P A R A M E T E R S
+         */
+        
+        
         /// <summary>
         /// Carries out identification on a blank parameter node
         /// </summary>
@@ -309,8 +321,7 @@ namespace Compiler.SemanticAnalysis
             PerformIdentification(varParameter.Identifier);
         }
 
-
-
+        
         /// <summary>
         /// Carries out identification on a type denoter node
         /// </summary>
@@ -319,9 +330,12 @@ namespace Compiler.SemanticAnalysis
         {
             PerformIdentification(typeDenoter.Identifier);
         }
-
-
-
+        
+        
+        /**
+         * L I T E R A L S 
+         */
+        
         /// <summary>
         /// Carries out identification on a character literal node
         /// </summary>
@@ -330,6 +344,19 @@ namespace Compiler.SemanticAnalysis
         {
         }
 
+        
+        /// <summary>
+        /// Carries out identification on an integer literal node
+        /// </summary>
+        /// <param name="integerLiteral">The node to perform identification on</param>
+        private void PerformIdentificationOnIntegerLiteral(IntegerLiteralNode integerLiteral)
+        {
+        }
+        
+        /**
+         * I D E N T I F I E R
+         */
+        
         /// <summary>
         /// Carries out identification on an identifier node
         /// </summary>
@@ -338,16 +365,13 @@ namespace Compiler.SemanticAnalysis
         {
             IDeclarationNode declaration = SymbolTable.Retrieve(identifier.IdentifierToken.Spelling);
             identifier.Declaration = declaration;
-            if (declaration == null) Reporter.ReportError($"{identifier.Position} -> Variable not declared");
+            if (declaration == null) Reporter.ReportError($"{identifier.Position} -> " +
+                                                          $"{identifier.IdentifierToken.Spelling} has not been declared");
         }
-
-        /// <summary>
-        /// Carries out identification on an integer literal node
-        /// </summary>
-        /// <param name="integerLiteral">The node to perform identification on</param>
-        private void PerformIdentificationOnIntegerLiteral(IntegerLiteralNode integerLiteral)
-        {
-        }
+        
+        /**
+         * O P E R A T O R S 
+         */
 
         /// <summary>
         /// Carries out identification on an operation node
@@ -357,7 +381,8 @@ namespace Compiler.SemanticAnalysis
         {
             IDeclarationNode declaration = SymbolTable.Retrieve(operation.OperatorToken.Spelling);
             operation.Declaration = declaration;
-            if (declaration == null) Reporter.ReportError($"{operation.Position} -> Null declaration");
+            if (declaration == null) Reporter.ReportError($"{operation.Position} -> " +
+                                                          $"{operation.OperatorToken.Spelling} is not an operator");
         }
     }
 }

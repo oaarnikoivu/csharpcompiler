@@ -1,7 +1,0 @@
-# This is a comment 
-let
-	var c: Char
-in
-	begin
-		c := '('
-	end

@@ -1,0 +1,7 @@
+# Testing that the scanner reports the correct errors 
+
+# 1. Unknown input error
+numbers = [1, 2, 3];
+
+# 2. Unacceptable sequence of input characters
+'h' 'e' 'l' 'l' 'o' ':'
